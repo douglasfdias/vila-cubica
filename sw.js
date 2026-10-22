@@ -1,5 +1,5 @@
 /* Guarda o jogo no aparelho depois da primeira visita. Troque VERSAO a cada publicação para forçar a atualização. */
-const VERSAO='vc-2';
+const VERSAO='vc-3';
 const BASE=['./','index.html','manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(VERSAO).then(c=>c.addAll(BASE)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==VERSAO).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
