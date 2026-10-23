@@ -51,6 +51,8 @@ body{background:var(--sky);color:var(--ink);font-family:var(--font-body);-webkit
 .chip .bar{width:54px;height:8px;border-radius:4px;background:#0e1430;overflow:hidden;display:inline-block}
 .chip .bar i{display:block;height:100%;background:var(--sun)}
 .chip.energy b{color:var(--energy)}
+.chip .cube{display:inline-block;width:13px;height:13px;background:var(--energy);border:2px solid var(--edge);box-sizing:border-box}
+.chip .wk{display:inline-flex;gap:4px}.chip .wk i{width:14px;height:14px;border-radius:4px;background:#2d3a6e;border:2px solid var(--edge);box-sizing:border-box}.chip .wk i.on{background:var(--leaf)}
 .topbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .title{font:400 24px var(--font-display);color:#fff;text-shadow:0 3px 0 var(--edge),2px 0 0 var(--edge),-2px 0 0 var(--edge),0 -2px 0 var(--edge)}
 .hint{align-self:flex-start;background:rgba(255,255,255,.92);border:3px solid var(--edge);border-radius:12px;padding:6px 10px;font:500 14px/1.3 var(--font-body);color:var(--ink);max-width:340px}
@@ -75,7 +77,7 @@ p{margin:0;line-height:1.4}
 .pin.hot span{background:var(--sun)}
 @keyframes bob{0%,100%{margin-top:0}50%{margin-top:-5px}}
 
-#narr{position:fixed;left:50%;top:var(--narr-top,86px);transform:translate(-50%,-8px);width:min(520px,calc(100% - 32px));display:flex;gap:10px;align-items:center;
+#narr{position:fixed;left:50%;top:var(--narr-top,calc(env(safe-area-inset-top,0px) + 78px));transform:translate(-50%,-8px);width:min(520px,calc(100% - 32px));display:flex;gap:10px;align-items:center;
   z-index:40;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
 #narr.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
 .spark{width:46px;height:46px;flex:none;background:var(--energy);border:3px solid var(--edge);border-radius:10px;box-shadow:0 0 0 3px rgba(63,240,255,.35),0 0 22px var(--energy);position:relative;animation:spk 1.4s ease-in-out infinite}
@@ -280,29 +282,92 @@ input[type=range]{width:100%;accent-color:var(--sun)}
 .hbot{display:flex;flex-direction:column;gap:10px}
 @media (orientation:landscape) and (max-height:540px){.hbot{flex-direction:row;align-items:center}.hcap{flex:1}.hcap p{font-size:16px;min-height:2.8em}.hctl .icon{width:50px;height:50px}}
 .intro-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+
+/* ===== interface de jogo (vertical) ===== */
+.top{position:absolute;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));top:calc(env(safe-area-inset-top,0px) + 14px);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.top .title{font-size:22px;pointer-events:none}
+.rbtn{all:unset;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent;flex:none}
+.rbtn i{position:relative;width:54px;height:54px;border-radius:50%;background:var(--night-2);border:3px solid var(--edge);box-shadow:0 4px 0 var(--edge);color:var(--cream);display:grid;place-items:center;box-sizing:border-box;transition:transform .08s,box-shadow .08s,background .15s}
+.rbtn i svg{width:26px;height:26px}
+.rbtn span{font:700 11px/1 var(--font-body);color:#fff;text-shadow:0 1px 0 var(--edge),1px 0 0 var(--edge),-1px 0 0 var(--edge),0 -1px 0 var(--edge),0 2px 0 var(--edge);white-space:nowrap}
+.rbtn:active i{transform:translateY(3px);box-shadow:0 1px 0 var(--edge)}
+.rbtn.on i{background:var(--sun);color:var(--ink);box-shadow:0 4px 0 var(--edge),0 0 0 4px #fff}
+.rbtn.on span{color:var(--sun)}
+.rbtn.hot i{background:var(--hot);color:#fff}
+.rbtn.blue i{background:var(--energy);color:var(--ink)}
+.rbtn.blue.on i{background:var(--energy)}
+.rbtn.big i{width:66px;height:66px}.rbtn.big i svg{width:30px;height:30px}
+.rbtn.sm i{width:46px;height:46px}.rbtn.sm i svg{width:22px;height:22px}
+.rbtn.xs i{width:40px;height:40px;border-width:3px}.rbtn.xs i svg{width:20px;height:20px}
+.rbtn.off i{opacity:.55}
+.top .chip{padding:5px 8px;gap:5px}.top .chip .bar{width:40px}
+.rbtn:focus-visible i{outline:3px solid #fff;outline-offset:2px}
+.rbtn .badge{position:absolute;top:-7px;right:-7px}
+.rail{position:absolute;display:flex;flex-direction:column;gap:10px;align-items:center;width:66px;top:calc(env(safe-area-inset-top,0px) + 148px)}
+.rail.r{right:max(6px,env(safe-area-inset-right,0px))}.rail.l{left:max(6px,env(safe-area-inset-left,0px))}
+.strip{position:absolute;left:0;right:0;bottom:0;height:calc(126px + env(safe-area-inset-bottom,0px));background:var(--night);border-top:4px solid var(--edge);border-radius:22px 22px 0 0;box-sizing:border-box;pointer-events:auto;box-shadow:0 -4px 0 rgba(15,21,48,.25)}
+.stab{position:absolute;left:18px;top:-4px;background:var(--sun);border:3px solid var(--edge);border-top:0;border-radius:0 0 10px 10px;padding:3px 14px 4px;font:400 14px/1.2 var(--font-display);color:var(--ink);letter-spacing:.6px}
+.cards{position:absolute;left:0;right:0;top:28px;display:flex;gap:9px;padding:4px 14px 12px;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
+.cards::-webkit-scrollbar{display:none}
+.it{all:unset;flex:none;width:62px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.it i{position:relative;width:60px;height:60px;box-sizing:border-box;border-radius:14px;background:var(--night-2);border:3px solid var(--edge);box-shadow:0 4px 0 var(--edge);display:grid;place-items:center;transition:transform .08s}
+.it i svg{width:42px;height:42px;overflow:visible}
+.it>span{font:600 11px/1.1 var(--font-body);color:var(--cream);white-space:nowrap;max-width:72px;overflow:hidden;text-overflow:ellipsis}
+.it.on i{border-color:var(--sun);background:#3a4888;box-shadow:0 4px 0 var(--edge),0 0 0 3px rgba(255,210,63,.5)}
+.it.on>span{color:var(--sun)}
+.it:active i{transform:translateY(3px);box-shadow:0 1px 0 var(--edge)}
+.it.locked i>svg{opacity:.35;filter:grayscale(.6)}
+.it .lk{position:absolute;inset:0;display:grid;place-items:center;color:var(--sun)}
+.it .lk svg{width:24px;height:24px}
+.it .nv{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);background:var(--sun);border:2px solid var(--edge);border-radius:8px;padding:0 6px;font:700 10px/1.45 var(--font-body);color:var(--ink);white-space:nowrap}
+.it.shake i{animation:shk .3s}
+.it .tag{position:absolute;top:-8px;right:-8px;background:var(--energy);border:2px solid var(--edge);border-radius:8px;padding:0 5px;font:700 10px/1.4 var(--font-body);color:var(--ink)}
+.sec{flex:none;align-self:stretch;writing-mode:vertical-rl;transform:rotate(180deg);font:400 11px var(--font-display);letter-spacing:1.2px;color:var(--muted);text-align:center;margin:0 -1px 14px;border-right:2px solid #2d3a6e;padding-right:5px}
+.pill{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:66px;padding:0 28px;background:var(--sun);border:4px solid var(--edge);border-radius:22px;box-shadow:0 7px 0 var(--edge);font:400 28px var(--font-display);color:var(--ink);letter-spacing:1px;cursor:pointer;pointer-events:auto;white-space:nowrap;transition:transform .08s,box-shadow .08s}
+.pill svg{width:26px;height:26px}
+.pill:active{transform:translateY(5px);box-shadow:0 2px 0 var(--edge)}
+.pill:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.pill.wide{width:100%}
+.botbar{position:absolute;left:max(14px,env(safe-area-inset-left,0px));right:max(14px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 22px);display:flex;align-items:flex-end;justify-content:space-between;gap:8px}
+.botbar.center{justify-content:center}
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 150px);transform:translate(-50%,10px);opacity:0;z-index:45;background:#fff;color:var(--ink);border:3px solid var(--edge);border-radius:14px;padding:7px 14px;font:700 14px var(--font-body);box-shadow:0 4px 0 var(--edge);transition:opacity .18s,transform .18s;pointer-events:none;white-space:nowrap;display:flex;align-items:center;gap:8px}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+#toast svg{width:18px;height:18px;color:#b8860b}
+#tapHint{position:fixed;left:0;top:0;width:0;height:0;z-index:8;pointer-events:none;display:none}
+#tapHint::before,#tapHint::after{content:"";position:absolute;left:-30px;top:-30px;width:60px;height:60px;border:4px solid var(--energy);border-radius:50%;box-sizing:border-box;animation:tpulse 1.6s ease-out infinite;box-shadow:0 0 12px var(--energy)}
+#tapHint::after{animation-delay:.8s}
+@keyframes tpulse{0%{transform:scale(.55);opacity:.95}100%{transform:scale(1.6);opacity:0}}
+#narr .say{cursor:pointer;max-width:100%}
+#narr .say span{display:block;min-height:1.3em}
+#rot{position:fixed;inset:0;z-index:200;background:var(--night);color:var(--cream);display:none;place-items:center;text-align:center;font:600 18px var(--font-body);padding:24px}
+#rot b{display:block;font:400 30px var(--font-display);color:var(--sun);margin-bottom:8px}
+@media (orientation:landscape) and (max-height:520px){#rot{display:grid}}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
 <canvas id="gl" aria-label="Mundo do jogo"></canvas>
 <div id="pins"></div>
 
+<div id="toast" role="status"></div>
+<div id="tapHint" aria-hidden="true"></div>
+<div id="rot"><div><b>Gire o celular</b>A Vila Cúbica funciona com o celular em pé.</div></div>
 <div id="narr" aria-live="polite"><div class="spark" id="narrIc" aria-hidden="true"></div><div class="say" data-tap><small id="narrWho">FAÍSCA</small><span id="narrTxt"></span></div></div>
 
 <!-- VILA -->
 <div class="layer" id="L-vila" hidden>
-  <div class="topbar">
-    <div class="chip pe" data-tap id="cXP"></div>
-    <div class="chip pe" data-tap id="cBlocos"></div>
+  <div class="top">
+    <div class="chip pe xpc" data-tap id="cXP"></div>
+    <div class="chip pe blc" data-tap id="cBlocos"></div>
     <div class="chip pe" data-tap id="cSem"></div>
     <span class="grow"></span>
-    <button class="icon pe" id="bSom" aria-label="Som"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/></svg></button>
-    <button class="icon pe" id="bVoz" aria-label="Voz da Faísca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8M8 13h5"/></svg></button>
+    <button class="rbtn xs" id="bMus" aria-label="Música"><i data-ic="music"></i></button>
+    <button class="rbtn xs" id="bSom" aria-label="Efeitos sonoros"><i data-ic="som"></i></button>
   </div>
-  <div class="spacer"></div>
-  <div class="bottom-row">
-    <button class="btn ghost pe" id="bMestre">Painel do pai</button>
-    <button class="btn ghost pe" id="bHist">História</button>
-    <button class="btn big pe" id="bViajar">Viajar</button>
+  <div class="botbar">
+    <button class="rbtn" id="bMestre"><i data-ic="lock"></i><span>Pai</span></button>
+    <button class="pill" id="bViajar">Viajar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+    <button class="rbtn" id="bHist"><i data-ic="book"></i><span>História</span></button>
   </div>
 </div>
 
@@ -331,101 +396,58 @@ input[type=range]{width:100%;accent-color:var(--sun)}
 
 <!-- GARAGEM -->
 <div class="layer" id="L-garagem" hidden>
-  <div class="topbar">
-    <button class="btn ghost pe" data-go="vila">Vila</button>
-    <div class="title pe" data-tap>Garagem</div>
+  <div class="top">
+    <button class="rbtn sm" data-go="vila" aria-label="Voltar para a Vila"><i data-ic="back"></i></button>
+    <div class="title">Garagem</div>
     <span class="grow"></span>
-    <button class="btn sm pe" id="gRecado">Recados</button>
-    <div class="chip pe" data-tap id="gBlocos"></div>
+    <div class="chip pe blc" data-tap id="gBlocos"></div>
+    <button class="rbtn sm" id="gRecado" aria-label="Recados do Mecânico-Chefe"><i data-ic="mail"></i></button>
   </div>
-  <div class="hint pe" data-tap>Arraste para girar. Toque no capô, nos faróis, nas rodas e no Núcleo azul.</div>
-  <div class="spacer"></div>
-  <div class="row qa pe">
-    <button class="btn sm" id="qCapo">Abrir capô</button>
-    <button class="btn sm blue" id="qLigar">Ligar motor</button>
-    <button class="btn sm red" id="qAcel">Acelerar</button>
-    <button class="btn sm ghost" id="qFarol">Faróis</button>
+  <div class="rail l">
+    <button class="rbtn" id="qCapo"><i data-ic="hood"></i><span>Capô</span></button>
+    <button class="rbtn blue" id="qLigar"><i data-ic="power"></i><span>Ligar</span></button>
+    <button class="rbtn hot big" id="qAcel"><i data-ic="gauge"></i><span>Acelerar</span></button>
+    <button class="rbtn" id="qFarol"><i data-ic="light"></i><span>Faróis</span></button>
   </div>
-  <div class="panel card pe">
-    <div class="tabs" role="tablist">
-      <button class="tab on" data-tab="pecas">Peças</button>
-      <button class="tab" data-tab="pneus">Pneus</button>
-      <button class="tab" data-tab="pintura">Pintura</button>
-      <button class="tab" data-tab="resgates">Resgates</button>
-    </div>
-    <div id="tab-pecas" data-pane="pecas" class="pecas">
-      <h3>Carro</h3>
-      <div class="tires" id="gCarro" style="grid-template-columns:repeat(2,1fr)"></div>
-      <h3>Motor <span class="small" id="engNote"></span></h3>
-      <div class="tires" id="gEng"></div>
-      <h3>Suspensão</h3>
-      <div class="tires" id="gSusp"></div>
-      <h3>Câmbio</h3>
-      <div class="tires" id="gCambio" style="grid-template-columns:repeat(2,1fr)"></div>
-      <p class="small">Torque é força para subir: a subida fica um nível mais leve, mas no gelo a roda patina e fica um nível mais pesado.</p>
-      <div class="part" data-say="O Núcleo de Energia guarda a energia que você gera pedalando. Ele é você no carro!"><b>Núcleo de Energia</b><em>É você!</em><p>Guarda a energia que você gera pedalando. O motor transforma essa energia em movimento.</p></div>
-    </div>
-    <div id="tab-pneus" data-pane="pneus" hidden><div class="tires" id="gTires"></div></div>
-    <div id="tab-pintura" data-pane="pintura" hidden><div class="swatches" id="gPaint"></div><p class="small" style="margin-top:8px">Novas cores liberam conforme você sobe de nível. Adesivos saem dos baús.</p></div>
-    <div id="tab-resgates" data-pane="resgates" hidden><div class="pecas" id="gResgates"></div></div>
+  <div class="rail r" id="gRail">
+    <button class="rbtn" data-cat="carro"><i data-ic="car"></i><span>Carro</span></button>
+    <button class="rbtn" data-cat="pecas"><i data-ic="gear"></i><span>Peças</span></button>
+    <button class="rbtn" data-cat="pneus"><i data-ic="tire"></i><span>Pneus</span></button>
+    <button class="rbtn" data-cat="pintura"><i data-ic="paint"></i><span>Pintura</span></button>
+    <button class="rbtn" id="gResg"><i data-ic="gift"></i><span>Prêmios</span></button>
   </div>
+  <div class="strip" id="gStrip"><div class="stab"></div><div class="cards"></div></div>
 </div>
 
 <!-- CASA DO AVATAR -->
 <div class="layer" id="L-casa" hidden>
-  <div class="topbar">
-    <button class="btn ghost pe" data-go="vila">Vila</button>
-    <div class="title pe" data-tap>Casa do Avatar</div>
+  <div class="top">
+    <button class="rbtn sm" data-go="vila" aria-label="Voltar para a Vila"><i data-ic="back"></i></button>
+    <div class="title">Casa</div>
+    <span class="grow"></span>
+    <div class="chip pe xpc" data-tap></div>
+    <div class="chip pe blc" data-tap></div>
   </div>
-  <div class="hint pe" data-tap>Toque no avatar, na TV, na estante, no espelho e no tapete. Gire rápido e veja o que acontece.</div>
-  <div class="spacer"></div>
-  <div class="panel card pe">
-    <div class="tabs" role="tablist">
-      <button class="tab on" data-tab="acoes">Ações</button>
-      <button class="tab" data-tab="corpo">Corpo</button>
-      <button class="tab" data-tab="roupa">Roupa</button>
-      <button class="tab" data-tab="acess">Acessórios</button>
-    </div>
-    <div data-pane="acoes" class="pecas">
-      <div class="acts" id="aActs">
-        <button class="btn sm" data-act="wave">Acenar</button>
-        <button class="btn sm" data-act="jump">Pular</button>
-        <button class="btn sm" data-act="dance">Dançar</button>
-        <button class="btn sm blue" data-act="jacks">Polichinelo</button>
-        <button class="btn sm ghost" data-act="sit">Sentar</button>
-        <button class="btn sm ghost" data-act="pose">Pose</button>
-        <button class="btn sm ghost" data-act="trofeus">Troféus</button>
-      </div>
-      <label class="toggle"><input type="checkbox" id="aAnchors"> Ver pontos de encaixe</label>
-    </div>
-    <div data-pane="corpo" class="pecas" hidden><div class="tires" id="aBody"></div></div>
-    <div data-pane="roupa" class="pecas" hidden>
-      <div class="tires" id="aRoupa"></div>
-      <h3>Sapatos</h3>
-      <div class="tires" id="aSapato"></div>
-    </div>
-    <div data-pane="acess" class="pecas" hidden>
-      <h3>Na cabeça</h3>
-      <div class="gears" style="grid-template-columns:repeat(4,1fr)" id="aHat"></div>
-      <h3>Óculos</h3>
-      <div class="tires" id="aOculos"></div>
-      <p class="small">Tudo se prende nos pontos de encaixe: o mesmo item serve em todos os corpos e acompanha o tamanho deles.</p>
-    </div>
+  <div class="rail r" id="aRail">
+    <button class="rbtn" data-cat="acoes"><i data-ic="bolt"></i><span>Ações</span></button>
+    <button class="rbtn" data-cat="corpo"><i data-ic="user"></i><span>Corpo</span></button>
+    <button class="rbtn" data-cat="roupa"><i data-ic="shirt"></i><span>Roupa</span></button>
+    <button class="rbtn" data-cat="acess"><i data-ic="glasses"></i><span>Acessórios</span></button>
+    <button class="rbtn" id="aTrof"><i data-ic="trophy"></i><span>Troféus</span></button>
   </div>
+  <div class="strip" id="aStrip"><div class="stab"></div><div class="cards"></div></div>
 </div>
 
 <!-- LABORATÓRIO -->
 <div class="layer" id="L-lab" hidden>
-  <div class="topbar">
-    <button class="btn ghost pe" data-go="vila">Vila</button>
-    <div class="title pe" data-tap>Laboratório</div>
+  <div class="top">
+    <button class="rbtn sm" data-go="vila" aria-label="Voltar para a Vila"><i data-ic="back"></i></button>
+    <div class="title">Laboratório</div>
     <span class="grow"></span>
     <div class="chip pe" data-tap id="labCount"></div>
   </div>
-  <div class="hint pe" data-tap>Toque na máquina para inventar. Toque nos frascos, na bobina, na lousa e nas cápsulas.</div>
-  <div class="spacer"></div>
-  <div class="bottom-row">
-    <button class="btn big pe" id="bInventar">Nova invenção</button>
+  <div class="botbar center">
+    <button class="pill" id="bInventar">Nova invenção <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
   </div>
 </div>
 
@@ -535,6 +557,13 @@ input[type=range]{width:100%;accent-color:var(--sun)}
   </div>
 </div>
 
+<div class="modal" id="M-resgates" hidden>
+  <div class="sheet card">
+    <div class="row"><h2>Prêmios</h2><span class="grow"></span><button class="btn ghost" data-close>Fechar</button></div>
+    <div class="pecas" id="gResgates"></div>
+  </div>
+</div>
+
 <div class="modal" id="M-recados" hidden>
   <div class="sheet card">
     <div class="row"><h2>Recados</h2><span class="grow"></span><button class="btn ghost" data-close>Fechar</button></div>
@@ -594,7 +623,7 @@ const fmt=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+String(s%6
 /* ---------------- estado ---------------- */
 const KEY='vilacubica_proto_v1';
 const DEF={paint:0,tire:'estrada',engine:'i4',susp:'normal',xp:40,blocos:25,sess:0,torres:0,somOn:true,vozOn:true,demo:true,nivMax:7,adesivo:false,body:'menino',hat:'capacete',coragem:0,unlockAll:false,pin:null,lockUntil:0,cal:{},pedidos:[],log:[],
-  roupa:'padrao',sapato:'padrao',oculos:'nenhum',carro:'classico',cambio:'normal',tapete:0,trof:[],
+  roupa:'padrao',sapato:'padrao',oculos:'nenhum',carro:'classico',cambio:'normal',tapete:0,trof:[],vistos:{},musOn:true,
   recados:[{id:'w1',txt:'Oi, piloto! Eu sou o Mecânico-Chefe. Cuido das peças do carro e das suas invenções. Quando o seu pai mandar um recado, eu entrego aqui.',quem:'auto',data:Date.now(),lido:false}],
   rewards:[{id:'r1',nome:'Escolher o filme da noite',custo:60},{id:'r2',nome:'Sobremesa especial',custo:90}],
   inv:[{nome:'Contra o Vento',ideia:'Juntar os ventiladores bem fortes e tentar andar contra o vento.',adapt:'Virou missão com banda elástica na cintura. O pai segura a ponta.',st:'Virou missão'}]};
@@ -683,7 +712,119 @@ function vozStop(){try{if(vozA){vozA.onended=vozA.onerror=null;vozA.pause();vozA
 function vozClip(txt,cb){const f=VOZ[txt];if(!f)return false;vozStop();try{const a=new Audio('audio/'+f);vozA=a;a.onended=()=>{if(vozA===a)vozA=null;cb&&cb();};a.onerror=()=>{if(vozA===a)vozA=null;cb&&cb(true);};const p=a.play();if(p&&p.catch)p.catch(()=>{if(vozA===a)vozA=null;cb&&cb(true);});return true;}catch(e){return false;}}
 function dizer(txt,who){if(!S.vozOn)return;if(vozClip(txt,e=>{if(e)tts(txt,who);}))return;tts(txt,who);}
 function tts(txt,who){if(!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang='pt-BR';if(voz)u.voice=voz;u.rate=who==='m'?.95:1.05;u.pitch=who==='m'?.55:1.15;speechSynthesis.speak(u);}catch(e){}}
-function falar(txt,ms,who){const m=who==='m';$('#narrIc').className=m?'mface':'spark';$('#narrWho').textContent=m?'MECÂNICO-CHEFE':'FAÍSCA';$('#narrTxt').textContent=txt;const n=$('#narr');n.classList.add('on');clearTimeout(narrT);narrT=setTimeout(()=>n.classList.remove('on'),ms||Math.max(3200,txt.length*70));dizer(txt,who);}
+/* balão de fala sem voz: o texto aparece letra a letra com um "blip"; uma fala nova encerra a anterior; tocar fecha */
+let typeT=0;
+function blipV(m){if(!S.somOn)return;tone(m?170+Math.random()*50:560+Math.random()*240,.04,m?'square':'triangle',m?.03:.045);}
+function falar(txt,ms,who){const m=who==='m';$('#narrIc').className=m?'mface':'spark';$('#narrWho').textContent=m?'MECÂNICO-CHEFE':'FAÍSCA';
+  const el=$('#narrTxt'),n=$('#narr');clearInterval(typeT);clearTimeout(narrT);el.textContent='';n.classList.add('on');n.dataset.full=txt;n.dataset.ms=ms||'';
+  if(typeof Musica!=='undefined')Musica.duck(true);
+  const step=Math.max(1,Math.round(txt.length/55));let i=0,k=0;
+  typeT=setInterval(()=>{i=Math.min(txt.length,i+step);el.textContent=txt.slice(0,i);if((k++)%2===0&&txt[i-1]!==' ')blipV(m);if(i>=txt.length){clearInterval(typeT);typeT=0;segurarFala(txt,ms);}},30);}
+function segurarFala(txt,ms){clearTimeout(narrT);narrT=setTimeout(fecharFala,ms||Math.max(2400,txt.length*55));}
+function fecharFala(){clearInterval(typeT);typeT=0;clearTimeout(narrT);$('#narr').classList.remove('on');if(typeof Musica!=='undefined')Musica.duck(false);}
+$('#narr').addEventListener('click',()=>{const n=$('#narr');if(typeT){clearInterval(typeT);typeT=0;$('#narrTxt').textContent=n.dataset.full;segurarFala(n.dataset.full,+n.dataset.ms||0);}else fecharFala();});
+/* dica: fala só na primeira vez */
+function dica(key,txt,ms,who){if(S.vistos[key])return false;S.vistos[key]=1;save();falar(txt,ms,who);return true;}
+/* ---------------- ícones ---------------- */
+const IC={
+  back:'<path d="M15 5 8 12l7 7"/>',arrow:'<path d="m9 5 7 7-7 7"/>',
+  bolt:'<path d="M13 2 4 14h7l-1 8 10-13h-7z"/>',user:'<circle cx="12" cy="7" r="4"/><path d="M4 21c0-5 4-8 8-8s8 3 8 8"/>',
+  shirt:'<path d="M8 3 3 7l3 4 2-1v11h8V10l2 1 3-4-5-4c-1 2-7 2-8 0z"/>',
+  glasses:'<circle cx="7" cy="14" r="3.6"/><circle cx="17" cy="14" r="3.6"/><path d="M10.6 14h2.8M3.4 14 2 9M20.6 14 22 9"/>',
+  trophy:'<path d="M7 4h10v6a5 5 0 0 1-10 0zM7 6H3v2a4 4 0 0 0 4 4M17 6h4v2a4 4 0 0 1-4 4M12 15v4M8 20h8"/>',
+  lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM19 19v2H6M9 8h6"/>',
+  som:'<path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 9a4 4 0 0 1 0 6M19 6.5a7.5 7.5 0 0 1 0 11"/>',
+  music:'<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.6"/><circle cx="17.5" cy="16" r="2.6"/>',
+  mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+  hood:'<path d="M3 17h18M5 17l2-5h10l2 5M8 9l4-5 4 5"/>',power:'<path d="M12 3v8M6.5 6.5a8 8 0 1 0 11 0"/>',
+  gauge:'<path d="M4.5 18a9 9 0 1 1 15 0"/><path d="m12 14 4.5-5"/><circle cx="12" cy="14" r="1.4"/>',
+  light:'<path d="M10 6a6 6 0 0 0 0 12h3V6zM16 8.5l5-1.5M16 12h5M16 15.5l5 1.5"/>',
+  car:'<path d="M3 16v-3l2-5h9l4 5h3v3z"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',
+  tire:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/>',
+  paint:'<rect x="3" y="3" width="15" height="7" rx="2"/><path d="M18 6h3v6h-9v3"/><rect x="10" y="15" width="4" height="6" rx="1"/>',
+  gift:'<rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M3 13h18M12 9v12M12 9c-2-4-6-4-6-1s6 1 6 1 6 2 6-1-4-3-6 1"/>',
+  hand:'<path d="M8 13V6a1.5 1.5 0 0 1 3 0v5M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.8L3 14.5a1.6 1.6 0 0 1 2.6-1.8L8 15"/>',
+  up:'<path d="M12 20V5M6 11l6-6 6 6"/>',note:'<path d="M9 18V5l10-2v13"/><circle cx="6.5" cy="18" r="2.6"/><circle cx="16.5" cy="16" r="2.6"/>',
+  star:'<path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.2 6L12 16.8 6.5 19.6l1.2-6L3.2 9.4l6.1-.8z"/>',
+  jacks:'<circle cx="12" cy="4.5" r="2"/><path d="M4 4l8 6 8-6M12 10v5M7 21l5-6 5 6"/>',
+  sit:'<circle cx="9" cy="4.5" r="2"/><path d="M9 7v6h6l2 7M9 13l-3 7M5 13h4"/>',
+  target:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/>',
+  pause:'<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>',
+  play:'<path d="M7 4.5v15L19 12z"/>',heart:'<path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/>',
+  cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'};
+function ic(n){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(IC[n]||'')+'</svg>';}
+$$('[data-ic]').forEach(e=>{e.insertAdjacentHTML('afterbegin',ic(e.dataset.ic));});
+
+/* ---------------- miniaturas dos cartões ---------------- */
+const hx=c=>'#'+(c>>>0).toString(16).padStart(6,'0');
+const SK='stroke="#0f1530" stroke-width="2.4" stroke-linejoin="round"';
+const svgW=b=>'<svg viewBox="0 0 40 40" aria-hidden="true">'+b+'</svg>';
+const TH={
+  shirt:(f,st,extra)=>svgW('<path d="M8 4l6-2q6 4 12 0l6 2 6 8-6 4-2-2v22H10V14l-2 2-6-4z" fill="'+f+'" '+SK+'/>'+(st?'<path d="M10 20h20M10 28h20" stroke="'+st+'" stroke-width="3"/>':'')+(extra||'')),
+  body(b){const sk=hx(b.skin);let x='<rect x="8" y="9" width="24" height="24" fill="'+sk+'" '+SK+'/>';
+    if(b.robot)x+='<rect x="11" y="17" width="18" height="5" fill="#3ff0ff"/><path d="M20 9V4" stroke="#0f1530" stroke-width="2.4"/><rect x="17" y="1" width="6" height="5" fill="#ff4d3d" '+SK+'/>';
+    else if(b.dino)x+='<path d="M14 9l3-5 3 5 3-5 3 5" fill="#ffb02e" '+SK+'/><rect x="13" y="16" width="4" height="5" fill="#1a1a2a"/><rect x="23" y="16" width="4" height="5" fill="#1a1a2a"/><rect x="11" y="24" width="18" height="4" fill="#2e6b1e"/>';
+    else if(b.alien)x+='<path d="M14 9 11 3M26 9l3-6" stroke="#0f1530" stroke-width="2.4"/><circle cx="11" cy="3" r="2.5" fill="#ff3fae"/><circle cx="29" cy="3" r="2.5" fill="#ff3fae"/><ellipse cx="14.5" cy="20" rx="3" ry="4" fill="#1a1a2a"/><ellipse cx="25.5" cy="20" rx="3" ry="4" fill="#1a1a2a"/><rect x="18" y="13" width="4" height="4" fill="#1a1a2a"/>';
+    else if(b.ears==='gato')x+='<path d="M8 10 9 2l6 7M32 10l-1-8-6 7" fill="'+sk+'" '+SK+'/><rect x="13" y="17" width="4" height="5" fill="#1a1a2a"/><rect x="23" y="17" width="4" height="5" fill="#1a1a2a"/><path d="M18 25h4l-2 2z" fill="#ff7ac8"/>';
+    else if(b.panda)x+='<rect x="5" y="5" width="8" height="8" fill="#1a1a2a" '+SK+'/><rect x="27" y="5" width="8" height="8" fill="#1a1a2a" '+SK+'/><rect x="11" y="15" width="8" height="8" fill="#1a1a2a"/><rect x="21" y="15" width="8" height="8" fill="#1a1a2a"/><rect x="13" y="17" width="3" height="3" fill="#fff"/><rect x="24" y="17" width="3" height="3" fill="#fff"/>';
+    else if(b.pinguim)x='<rect x="8" y="9" width="24" height="24" fill="#1d2233" '+SK+'/><rect x="12" y="15" width="16" height="16" fill="#fff"/><rect x="14" y="17" width="4" height="5" fill="#1a1a2a"/><rect x="22" y="17" width="4" height="5" fill="#1a1a2a"/><path d="M17 24h6l-3 4z" fill="#ff9a3d" '+SK+'/>';
+    else if(b.ninja)x+='<rect x="8" y="9" width="24" height="9" fill="#1d1f2a"/><rect x="8" y="24" width="24" height="9" fill="#1d1f2a"/><rect x="13" y="19" width="4" height="4" fill="#1a1a2a"/><rect x="23" y="19" width="4" height="4" fill="#1a1a2a"/><path d="M32 13l6 3-6 1" fill="#e23b2e"/>';
+    else if(b.cavaleiro)x='<rect x="8" y="9" width="24" height="24" fill="#c9cfdc" '+SK+'/><rect x="10" y="18" width="20" height="3" fill="#1d1f2a"/><path d="M20 9V2" stroke="#e23b2e" stroke-width="4"/>';
+    else x+='<rect x="8" y="9" width="24" height="6" fill="'+hx(b.hair||0x3a2414)+'"/><rect x="13" y="18" width="4" height="5" fill="#1a1a2a"/><rect x="23" y="18" width="4" height="5" fill="#1a1a2a"/><rect x="16" y="27" width="8" height="2" fill="#8a3a2a"/>';
+    return svgW(x+'<rect x="12" y="33" width="16" height="6" fill="'+hx(b.shirt)+'" '+SK+'/>');},
+  shoe:(c,o)=>{o=o||{};return svgW((o.mola?'<path d="M10 33l4-3 4 3 4-3 4 3 4-3" fill="none" stroke="#ffd23f" stroke-width="3"/>':'')+'<path d="M5 '+(o.alto?10:16)+'h12l2 '+(o.alto?12:8)+'h12a4 4 0 0 1 4 4v4H5z" fill="'+c+'" '+SK+'/>'+(o.risca?'<path d="M9 22l7 4" stroke="'+o.risca+'" stroke-width="3"/>':'')+'<path d="M5 28h30" stroke="#0f1530" stroke-width="2"/>');},
+  none:()=>svgW('<circle cx="20" cy="20" r="12" fill="none" stroke="#8b93b8" stroke-width="3.5"/><path d="M12 28 28 12" stroke="#8b93b8" stroke-width="3.5"/>'),
+  hat(k){const H={
+      capacete:'<path d="M6 26a14 14 0 0 1 28 0z" fill="#ff4d3d" '+SK+'/><rect x="17" y="12" width="6" height="14" fill="#fff"/><rect x="5" y="26" width="30" height="5" fill="#d23a2c" '+SK+'/>',
+      bone:'<path d="M8 24a12 12 0 0 1 24 0z" fill="#2f7bff" '+SK+'/><rect x="20" y="22" width="16" height="5" rx="2" fill="#1f5ed0" '+SK+'/>',
+      coroa:'<path d="M6 30V14l7 7 7-10 7 10 7-7v16z" fill="#ffd23f" '+SK+'/><rect x="17" y="23" width="6" height="4" fill="#ff3fae"/>',
+      mago:'<path d="M20 3 30 30H10z" fill="#5b2bd1" '+SK+'/><rect x="5" y="29" width="30" height="5" fill="#5b2bd1" '+SK+'/><circle cx="18" cy="17" r="2" fill="#ffd23f"/><circle cx="23" cy="24" r="1.6" fill="#ffd23f"/>',
+      cowboy:'<path d="M12 26c0-8 2-14 8-14s8 6 8 14z" fill="#a0632e" '+SK+'/><path d="M3 26c5 5 29 5 34 0" fill="#a0632e" '+SK+'/><rect x="12" y="22" width="16" height="3" fill="#5d3a1a"/>',
+      pirata:'<path d="M5 26c4-12 26-12 30 0z" fill="#1d1f2a" '+SK+'/><circle cx="20" cy="20" r="3" fill="#fff"/>',
+      fones:'<path d="M8 26V20a12 12 0 0 1 24 0v6" fill="none" stroke="#0f1530" stroke-width="3"/><rect x="4" y="22" width="8" height="12" rx="3" fill="#ff3fae" '+SK+'/><rect x="28" y="22" width="8" height="12" rx="3" fill="#ff3fae" '+SK+'/>',
+      mascara:'<path d="M4 16h32v8c-6 4-10 4-16 0-6 4-10 4-16 0z" fill="#e23b2e" '+SK+'/><ellipse cx="13" cy="19" rx="4" ry="2.5" fill="#fff"/><ellipse cx="27" cy="19" rx="4" ry="2.5" fill="#fff"/>'};
+    return k==='nenhum'?TH.none():svgW(H[k]||'');},
+  glasses(o){if(!o.aro&&!o.visor)return TH.none();if(o.visor)return svgW('<rect x="4" y="15" width="32" height="10" rx="3" fill="#3ff0ff" '+SK+'/>');
+    const l=hx(o.lente),a=hx(o.aro);if(o.estrela)return svgW('<path d="m11 11 2.5 5 5 .6-3.7 3.4 1 5-4.8-2.6L6.2 25l1-5L3.5 16.6l5-.6zM29 11l2.5 5 5 .6-3.7 3.4 1 5-4.8-2.6-4.8 2.6 1-5-3.7-3.4 5-.6z" fill="'+l+'" stroke="'+a+'" stroke-width="2.4" stroke-linejoin="round"/>');
+    return svgW('<rect x="4" y="14" width="13" height="11" rx="3" fill="'+l+'" stroke="'+a+'" stroke-width="3"/><rect x="23" y="14" width="13" height="11" rx="3" fill="'+l+'" stroke="'+a+'" stroke-width="3"/><path d="M17 18h6" stroke="'+a+'" stroke-width="3"/>');},
+  car(m,c){const col=hx(c);const S2={
+      classico:'<rect x="3" y="18" width="34" height="9" rx="2" fill="'+col+'" '+SK+'/><rect x="9" y="10" width="16" height="9" fill="'+col+'" '+SK+'/><rect x="12" y="12" width="10" height="5" fill="#a8ecff"/>',
+      picape:'<rect x="3" y="18" width="34" height="9" rx="2" fill="'+col+'" '+SK+'/><rect x="17" y="9" width="11" height="10" fill="'+col+'" '+SK+'/><rect x="19" y="11" width="7" height="5" fill="#a8ecff"/><path d="M4 18v-4h12v4" fill="none" stroke="#0f1530" stroke-width="2.4"/>',
+      jipe:'<rect x="3" y="15" width="34" height="11" rx="2" fill="'+col+'" '+SK+'/><rect x="7" y="5" width="18" height="11" fill="'+col+'" '+SK+'/><rect x="10" y="7" width="12" height="6" fill="#a8ecff"/><circle cx="3" cy="19" r="4" fill="#22232b" '+SK+'/>',
+      esportivo:'<path d="M2 22l4-6h10l5-4h7l10 6v6H2z" fill="'+col+'" '+SK+'/><path d="M17 15l5-3h5l3 3z" fill="#a8ecff"/><rect x="1" y="12" width="9" height="3" fill="#1d1f2a"/>'}[m]||'';
+    const r=m==='jipe'?6:5;return svgW(S2+'<circle cx="11" cy="28" r="'+r+'" fill="#22232b" '+SK+'/><circle cx="29" cy="28" r="'+r+'" fill="#22232b" '+SK+'/><circle cx="11" cy="28" r="2" fill="#dfe4ee"/><circle cx="29" cy="28" r="2" fill="#dfe4ee"/>');},
+  engine(k){const c={i4:'#d8352a',v6:'#2f7bff',v8:'#ff4d3d'}[k],w={i4:22,v6:26,v8:32}[k];
+    return svgW('<rect x="'+(20-w/2)+'" y="14" width="'+w+'" height="18" rx="2" fill="#5b6476" '+SK+'/><rect x="'+(20-w/2+2)+'" y="9" width="'+(w-4)+'" height="7" fill="'+c+'" '+SK+'/>'+(k==='v8'?'<rect x="15" y="3" width="10" height="7" fill="#ffd23f" '+SK+'/>':'')+'<text x="20" y="28" text-anchor="middle" font-family="Lilita One,Arial Black,sans-serif" font-size="'+(k==='i4'?11:10)+'" fill="#fff">'+{i4:'4L',v6:'V6',v8:'V8'}[k]+'</text>');},
+  cambio(k){const c=k==='torque'?'#ff9a3d':'#8a93a8';let t='';for(let i=0;i<8;i++){const a=i/8*Math.PI*2;t+='<rect x="17" y="3" width="6" height="7" fill="'+c+'" stroke="#0f1530" stroke-width="2" transform="rotate('+(a*180/Math.PI)+' 20 20)"/>';}
+    return svgW(t+'<circle cx="20" cy="20" r="11" fill="'+c+'" '+SK+'/><circle cx="20" cy="20" r="4" fill="#1f2850" '+SK+'/>');},
+  susp(k){const y={baixa:20,normal:14,alta:6}[k];return svgW('<rect x="6" y="'+y+'" width="28" height="8" rx="2" fill="#2f7bff" '+SK+'/><path d="M12 '+(y+8)+' l-3 2 6 2-6 2 6 2-3 2M28 '+(y+8)+' l-3 2 6 2-6 2 6 2-3 2" fill="none" stroke="#ffd23f" stroke-width="2.4" transform="scale(1 '+((34-y-8)/12).toFixed(2)+')" transform-origin="20 '+(y+8)+'"/><rect x="5" y="34" width="30" height="3" fill="#8b93b8"/>');},
+  tire(t){const ring=t==='estrada'?'<circle cx="20" cy="20" r="12" fill="none" stroke="#f4f4f4" stroke-width="3"/>':t==='offroad'?'<circle cx="20" cy="20" r="17" fill="none" stroke="#5b5f70" stroke-width="5" stroke-dasharray="5 4"/>':'<circle cx="20" cy="20" r="17" fill="none" stroke="#e8f6ff" stroke-width="4" stroke-dasharray="3 5"/>';
+    return svgW('<circle cx="20" cy="20" r="16" fill="#22232b" '+SK+'/>'+ring+'<circle cx="20" cy="20" r="6" fill="'+(t==='garras'?'#9fe0ff':'#dfe4ee')+'" '+SK+'/>');},
+  swatch:c=>svgW('<rect x="5" y="5" width="30" height="30" rx="7" fill="'+c+'" '+SK+'/><path d="M10 12h8" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".6"/>'),
+  act:n=>'<svg viewBox="0 0 24 24" fill="none" stroke="#fff6e3" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:32px;height:32px">'+IC[n]+'</svg>'};
+
+/* ---------------- faixas de cartões ---------------- */
+function stripHTML(sections){return sections.map(s=>(s.label?'<div class="sec">'+s.label+'</div>':'')+s.items.map(it=>{const lk=!!it.lv&&locked(it.lv);
+  return '<button class="it'+(it.on?' on':'')+(lk?' locked':'')+'" data-k="'+it.k+'" aria-label="'+esc(it.nome)+(lk?', libera no nível '+it.lv:'')+'"><i>'+it.svg+(lk?'<b class="lk">'+ic('lock')+'</b><b class="nv">Nv '+it.lv+'</b>':'')+(it.tag?'<b class="tag">'+it.tag+'</b>':'')+'</i><span>'+esc(it.nome)+'</span></button>';}).join('')).join('');}
+function setStrip(id,title,sections,reset){const s=$(id);s.querySelector('.stab').textContent=title;const c=s.querySelector('.cards');const sl=c.scrollLeft;c.innerHTML=stripHTML(sections);c.scrollLeft=reset?0:sl;}
+function railOn(id,cat){$$(id+' [data-cat]').forEach(b=>b.classList.toggle('on',b.dataset.cat===cat));}
+function shakeCard(btn){if(!btn)return;btn.classList.remove('shake');void btn.offsetWidth;btn.classList.add('shake');}
+function bloqueado(lv,btn){SFX.bloop();buzz([30,40,30]);shakeCard(btn);aviso('Libera no nível '+lv,'lock');}
+
+/* ---------------- avisos curtos (sem personagem) ---------------- */
+let toastT=0;
+function aviso(txt,icon){const t=$('#toast');t.innerHTML=(icon?ic(icon):'')+'<span>'+esc(txt)+'</span>';t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),1700);}
+
+/* ---------------- dica de toque (primeira visita) ---------------- */
+const HINT={get:null,scene:''};
+function setHint(scene,getPos){if(S.vistos['h_'+scene]){HINT.get=null;return;}HINT.scene=scene;HINT.get=getPos;}
+function clearHint(){if(HINT.get&&HINT.scene){S.vistos['h_'+HINT.scene]=1;save();}HINT.get=null;$('#tapHint').style.display='none';}
+const _hv=new THREE.Vector3();
+function hintTick(){const el=$('#tapHint');if(!HINT.get||HINT.scene!==curName){el.style.display='none';return;}HINT.get(_hv);_hv.project(camera);
+  if(_hv.z>1){el.style.display='none';return;}el.style.display='block';el.style.transform='translate('+((_hv.x+1)/2*innerWidth).toFixed(1)+'px,'+((1-_hv.y)/2*innerHeight).toFixed(1)+'px)';}
+
 
 /* ---------------- three ---------------- */
 const canvas=$('#gl');
@@ -843,13 +984,13 @@ let blipT=0;
 function blip(car){clearTimeout(blipT);if(!Motor.on)Motor.start(car.userData.engine);Motor.rev();car.userData.engRun=1;
   if(!(curName==='garagem'&&G.motorOn))blipT=setTimeout(()=>{if(curName==='garagem'&&G.motorOn)return;if(curName==='viagem')return;Motor.stop();car.userData.engRun=0;},2600);}
 function setHood(car,open,quiet){const u=car.userData;if(u.hoodOpen===open)return;u.hoodOpen=open;SFX[open?'hoodOpen':'hoodClose']();buzz(20);
-  if(open&&!quiet)falar('Capô aberto! Aí dentro está o motor '+ENGINES[u.engine].nome+'. Toque nele para acelerar.');garageButtons();}
+  if(open&&!quiet)dica('capo','Capô aberto! Aí dentro está o motor. Toque nele para acelerar.');garageButtons();}
 function carTap(car,o,pt,sc,where){const u=car.userData,a=o.userData.action;
   if(a==='hood'&&where!=='viagem'){setHood(car,!u.hoodOpen);return;}
-  if(a==='engine'&&u.hoodOpen){blip(car);pop(sc,pt,[0xc9ced8,0xffd23f],6,2.5,.1);falar(ENGINES[u.engine].desc);return;}
-  if(a==='lights'){u.lightsOn=!u.lightsOn;applyLights(car);SFX.click();buzz(10);garageButtons();if(u.lightsOn)falar('Faróis ligados!',1800);return;}
-  if(a==='wheel'){u.wheelSpin[o.userData.i]=1;SFX.spin();buzz(15);falar(TIRES[u.tire].desc);return;}
-  if(a==='core'){SFX.chime();pop(sc,pt,[0x3ff0ff,0xffffff],12,3.5,.14);u.coreFlash=1.2;falar('Esse é o Núcleo de Energia. Ele guarda a energia que você gera pedalando, e o motor transforma em movimento.');return;}
+  if(a==='engine'&&u.hoodOpen){blip(car);pop(sc,pt,[0xc9ced8,0xffd23f],6,2.5,.1);dica('eng_'+u.engine,ENGINES[u.engine].desc);return;}
+  if(a==='lights'){u.lightsOn=!u.lightsOn;applyLights(car);SFX.click();buzz(10);garageButtons();return;}
+  if(a==='wheel'){u.wheelSpin[o.userData.i]=1;SFX.spin();buzz(15);dica('pneu_'+u.tire,TIRES[u.tire].desc);return;}
+  if(a==='core'){SFX.chime();pop(sc,pt,[0x3ff0ff,0xffffff],12,3.5,.14);u.coreFlash=1.2;dica('nucleo','Esse é o Núcleo de Energia. Ele guarda a energia que você gera pedalando, e o motor transforma em movimento.');return;}
   SFX.horn();u.pop=1;buzz(20);}
 
 /* ---------------- avatar ---------------- */
@@ -860,7 +1001,7 @@ const BODIES={
   grandao:{nome:'Grandão',head:.95,tw:1.15,th:1.3,td:.65,leg:1.2,arm:1.15,skin:0xc68642,shirt:0x2ecc71,pants:0x2b2b38,hair:0x14110f,lv:2,desc:'O Grandão! Pernas compridas e braços fortes.'},
   dino:{nome:'Dino',head:1.2,tw:1.05,th:1.0,td:.7,leg:.7,arm:.6,skin:0x5ccb3a,shirt:0x5ccb3a,pants:0x48a832,dino:true,lv:3,desc:'Rawr! O Dino tem espinhos nas costas e um rabo que balança.'},
   alien:{nome:'Alien',head:1.3,tw:.85,th:.95,td:.5,leg:.85,arm:.95,skin:0x9df0c0,shirt:0x7a5cff,pants:0x3d2f7a,alien:true,lv:4,desc:'Um alien chegou na Vila! Três olhos e duas antenas.'}};
-const HATS={nenhum:'Nada',capacete:'Capacete',bone:'Boné',coroa:'Coroa'};
+const HATS={nenhum:{nome:'Nada'},capacete:{nome:'Capacete'},bone:{nome:'Boné'},coroa:{nome:'Coroa',lv:2,desc:'Uma coroa! Rei ou rainha da Vila Cúbica.'}};
 /* roupas, sapatos e óculos: cada item tem o nível em que libera (lv) */
 const ROUPAS={
   padrao:{nome:'Do corpo',lv:1},
@@ -969,7 +1110,7 @@ function animAvatar(av,dt,t){const u=av.userData,b=u.b,A=u.arms,L=u.legs,H=u.hea
       case 'pose':{const k=env;arm[0][1]=2.4*k;arm[1][0]=-1.4*k;arm[1][1]=.5*k;hz+=.2*k;ry=Math.sin(a.t*2)*.25*k;}break;
       case 'dance':{const w=Math.sin(t*8);ry=w*.45*env;py=Math.abs(w)*.15*env;arm[0][1]=(1.6+w)*env;arm[1][1]=(1.6-w)*env;leg[0][0]=w*.25*env;leg[1][0]=-w*.25*env;hz+=w*.15*env;}break;
       case 'jacks':{const f=1.1,o=(1-Math.cos(a.t*f*Math.PI*2))/2;arm[0][1]=arm[1][1]=2.9*o;leg[0][1]=leg[1][1]=.35*o;py=Math.abs(Math.sin(a.t*f*Math.PI*2))*.18;
-        const c=Math.floor(a.t*f);if(c>a.c){a.c=c;if(u.loud){SFX.tick(c);if(NUM[c-1])dizer(NUM[c-1]);}}}break;
+        const c=Math.floor(a.t*f);if(c>a.c){a.c=c;if(u.loud){SFX.tick(c);}}}break;
       case 'laugh':rz=Math.sin(t*30)*.07*env;py=Math.abs(Math.sin(t*15))*.06*env;arm[0][0]=arm[1][0]=-.7*env;arm[0][1]=arm[1][1]=-.35*env;hx=-.25*env;ey=.4;break;
       case 'sit':case 'sleep':{const k=a.name==='sleep'?Math.min(1,a.t*1.5):env;leg[0][0]=leg[1][0]=-1.45*k;py=-(b.leg-.25)*k;arm[0][0]=arm[1][0]=-.45*k;
         if(a.name==='sleep'){hx=.45*k;ey=.1;u.zt-=dt;if(u.zt<=0){u.zt=1.1;const z=makeZ();z.position.set(.4,b.leg+b.th+b.head*.8-(b.leg-.25),.3);av.add(z);u.zzz.push({m:z,l:2.2});}}}break;
@@ -1078,7 +1219,7 @@ const vila=(function(){
     if(a[0]==='wave'||a[0]==='jacks'||a[0]==='dance')W.face=true;playAct(av,a[0],a[1]);W.state='act';W.timer=a[1]+.6+Math.random()*1.4;}
   function avatarPoke(){W.path=[];W.state='act';W.face=true;const o=[['wave',1.6,'select'],['jump',.8,'boing'],['dance',2.4,'music']][Math.floor(Math.random()*3)];
     playAct(av,o[0],o[1]);SFX[o[2]]();buzz(15);W.timer=o[1]+.6;pop(sc,W.pos.clone().add(new THREE.Vector3(0,1.2,0)),[0xffd23f,0x3ff0ff,0xff5a4e],8,3,.12);
-    if(!W.met){W.met=true;falar('Esse é você, piloto! Toque no chão e ele anda até lá.');}}
+    if(!W.met){W.met=true;dica('avatar_vila','Esse é você, piloto! Toque no chão e ele anda até lá.');}}
   function updAvatar(dt,t){if(!av)return;const u=av.userData;u.walking=false;
     if(W.state==='walk'){const tg=W.path[0];
       if(!tg){W.state='idle';W.timer=.5;}
@@ -1093,8 +1234,8 @@ const vila=(function(){
 
   const pinsDef=[['garagem','Garagem'],['lab','Laboratório'],['casa','Casa do Avatar'],['torre','Torre da Vila'],['portao','Portão do Mapa']];
   let yaw=-.25,vel=0,pins=[],D=25;
-  function dist(){const a=camera.aspect,fov=a<1?55:45;camera.fov=fov;return Math.max(23,9.5/(Math.tan(fov*Math.PI/360)*a));}
-  function placeCam(){const el=.92,c=new THREE.Vector3(0,0,.4);camera.position.set(c.x+Math.sin(yaw)*D*Math.cos(el),D*Math.sin(el),c.z+Math.cos(yaw)*D*Math.cos(el));camera.lookAt(c);}
+  function dist(){const a=camera.aspect,fov=a<1?50:45;camera.fov=fov;return a<1?Math.max(21,7.4/(Math.tan(fov*Math.PI/360)*a)):Math.max(23,9.5/(Math.tan(fov*Math.PI/360)*a));}
+  function placeCam(){const el=camera.aspect<1?.98:.92,c=new THREE.Vector3(0,0,camera.aspect<1?.9:.4);camera.position.set(c.x+Math.sin(yaw)*D*Math.cos(el),D*Math.sin(el),c.z+Math.cos(yaw)*D*Math.cos(el));camera.lookAt(c);}
   const fixed=[...Object.values(B),...trees];
   function act(k,o){o=o||B[k];if(o&&o.userData)o.userData.b=1;
     if(k==='garagem'){SFX.select();go('garagem');}
@@ -1105,11 +1246,11 @@ const vila=(function(){
       falar(S.torres?'A torre já tem '+S.torres+' '+(S.torres>1?'cargas':'carga')+' de energia. Cada viagem completa deixa ela mais forte!':'A torre está apagada. Viaje pelo mapa e traga energia para ela acender!');}
     else if(k==='tree'){SFX.pop();pop(sc,o.position.clone().add(new THREE.Vector3(0,2,0)),[0x56c24a,0x3fae3a],8,3);}}
   return{scene:sc,
-    enter(){viewShift=.04;document.body.style.setProperty('--narr-top','calc(env(safe-area-inset-top,0px) + 70px)');resize();
+    enter(){viewShift=camera.aspect<1?-.035:.04;document.body.style.setProperty('--narr-top','calc(env(safe-area-inset-top,0px) + 76px)');resize();
       if(car)sc.remove(car);car=buildCar();car.position.set(-3.8,0,-1.4);car.rotation.y=-Math.PI/2+.4;sc.add(car);
       if(av)sc.remove(av);av=buildAvatar(S.body,S.hat,visual());sc.add(av);W.vis=1;
       if(['enter','inside','exit'].includes(W.state)||(W.state==='walk'&&!W.path.length)){W.state='idle';W.timer=.6;}
-      const pinWrap=$('#pins');pinWrap.innerHTML='';pins=pinsDef.map(([k,label])=>{const el=document.createElement('div');el.className='pin'+(k==='portao'?' hot':'');el.innerHTML='<span>'+label+'</span>';
+      HINT.get=null;const pinWrap=$('#pins');pinWrap.innerHTML='';pins=pinsDef.map(([k,label])=>{const el=document.createElement('div');el.className='pin'+(k==='portao'?' hot':'');el.innerHTML='<span>'+label+'</span>';
         el.addEventListener('click',()=>act(k));pinWrap.appendChild(el);return{el,o:B[k]};});
       refreshVila();},
     exit(){$('#pins').innerHTML='';pins=[];},
@@ -1125,7 +1266,7 @@ const vila=(function(){
       if(car)animCar(car,dt,t,0,0);updAvatar(dt,t);
       const w=innerWidth,h=innerHeight,v=new THREE.Vector3();
       pins.forEach(p=>{p.o.getWorldPosition(v);v.y+=p.o.userData.pinY;v.project(camera);if(v.z>1){p.el.style.display='none';return;}p.el.style.display='';
-        p.el.style.transform='translate('+((v.x+1)/2*w).toFixed(1)+'px,'+((1-v.y)/2*h).toFixed(1)+'px)';});},
+        const px=clamp((v.x+1)/2*w,(p.el.offsetWidth||120)/2+8,w-(p.el.offsetWidth||120)/2-8);p.el.style.transform='translate('+px.toFixed(1)+'px,'+((1-v.y)/2*h).toFixed(1)+'px)';});},
     drag(dx){yaw-=dx*.006;vel=-dx*.35;},
     tap(e){const hit=pick(e,[...fixed,car,av&&av.visible?av:null]);
       if(hit.length){const o=actionOf(hit[0].object);if(o){const a=o.userData.action;
@@ -1136,10 +1277,10 @@ const vila=(function(){
         if(!inObst(p.x,p.z,.2)&&W.vis>=1&&['walk','act','idle'].includes(W.state))walkTo(p.x,p.z,null,true);}}};
 })();
 function refreshVila(){const lv=LV(),pr=(S.xp%200)/2;
-  $('#cXP').innerHTML='<b>Nív. '+lv+'</b><span class="bar"><i style="width:'+pr+'%"></i></span>';
-  $('#cBlocos').innerHTML='<b>'+S.blocos+'</b> blocos';$('#cSem').innerHTML='Semana <b>'+Math.min(S.sess,3)+'/3</b>';
-  $('#gBlocos').innerHTML='<b>'+S.blocos+'</b> blocos';
-  $('#bSom').classList.toggle('off',!S.somOn);$('#bVoz').classList.toggle('off',!S.vozOn);$('#vSom').classList.toggle('off',!S.somOn);}
+  $$('.xpc').forEach(e=>e.innerHTML='<b>Nív. '+lv+'</b><span class="bar"><i style="width:'+pr+'%"></i></span>');
+  $$('.blc').forEach(e=>e.innerHTML='<i class="cube"></i><b>'+S.blocos+'</b>');
+  const k=Math.min(S.sess,3);$('#cSem').innerHTML='<span class="wk">'+[0,1,2].map(i=>'<i class="'+(i<k?'on':'')+'"></i>').join('')+'</span>';$('#cSem').setAttribute('aria-label','Semana: '+k+' de 3 viagens');
+  $('#bSom').classList.toggle('off',!S.somOn);$('#bMus').classList.toggle('off',!S.musOn);const vs=$('#vSom');if(vs)vs.classList.toggle('off',!S.somOn);}
 
 /* ================= CENA: GARAGEM ================= */
 const garagem=(function(){
@@ -1169,14 +1310,15 @@ const garagem=(function(){
   for(let i=0;i<8;i++){const a=i/8*Math.PI*2;box(tt,.2,.05,.2,0x3ff0ff,Math.cos(a)*2.2,.3,Math.sin(a)*2.2,{em:0x15a0b8,shadow:false});}
   let car=null,rot=.6,vel=.25,idle=0,snap=true;const camP=new THREE.Vector3(),camL=new THREE.Vector3(),tP=new THREE.Vector3(),tL=new THREE.Vector3();
   function poses(){const a=camera.aspect,fov=a<1?52:40;camera.fov=fov;
-    if(car&&car.userData.hoodOpen){const k=a<1?1.7:1.05;tL.set(.66,1.75,.88);tP.set(.66+.5*k,1.75+2.3*k,.88+3.0*k);}
-    else{const d=Math.max(9,3.9/(Math.tan(fov*Math.PI/360)*a));tP.set(0,3.4,d);tL.set(0,1.3,0);}}
+    if(car&&car.userData.hoodOpen){const k=a<1?2.1:1.05;tL.set(.66,1.6,.88);tP.set(.66+.5*k,1.6+2.3*k,.88+3.0*k);}
+    else{const d=Math.max(9,3.0/(Math.tan(fov*Math.PI/360)*a));tP.set(0,3.6,d);tL.set(0,1.25,0);}}
   return{scene:sc,get car(){return car;},get mech(){return mech;},
     swapCar(){const lt=car&&car.userData.lightsOn,ho=car&&car.userData.hoodOpen;if(car)tt.remove(car);car=buildCar();car.position.y=.28;tt.add(car);car.userData.pop=1;
       if(lt){car.userData.lightsOn=true;applyLights(car);}if(ho)setHood(car,true,true);if(G.motorOn)car.userData.engRun=1;pop(sc,new THREE.Vector3(0,2.6,0),[0xffd23f,0x3ff0ff,0xffffff],18,4.5);garageButtons();},
-    enter(){viewShift=camera.aspect<1?.16:.12;document.body.style.setProperty('--narr-top','calc(env(safe-area-inset-top,0px) + 120px)');resize();
-      if(car)tt.remove(car);car=buildCar();car.position.y=.28;tt.add(car);G.motorOn=false;snap=true;renderGarage();refreshVila();
-      refreshRecados();setTimeout(()=>falar('Bem-vindo à garagem, piloto! Abra o capô para ver o motor, ou ligue ele para ouvir o ronco.'),300);
+    enter(){viewShift=camera.aspect<1?.05:.12;document.body.style.setProperty('--narr-top','calc(env(safe-area-inset-top,0px) + 76px)');resize();
+      if(car)tt.remove(car);car=buildCar();car.position.y=.28;tt.add(car);G.motorOn=false;snap=true;renderGarage(true);refreshVila();
+      setHint('garagem',v=>car.userData.hood.localToWorld(v.set(.56,.12,0)));
+      refreshRecados();setTimeout(()=>dica('gar_ola','Bem-vindo à garagem! Toque no capô para ver o motor. Os botões da direita trocam as peças.'),300);
       setTimeout(()=>{if(curName==='garagem'&&unread().length)mechTalk();},7800);},
     exit(){},resize(){camera.fov=camera.aspect<1?52:40;snap=true;},
     update(dt,t){idle+=dt;const u=car.userData;
@@ -1193,51 +1335,51 @@ const garagem=(function(){
       if(v.action==='paint')choosePaint(v.i,hit[0].point);
       else if(v.action==='tire')chooseTire(v.t);
       else if(v.action==='mestre')mechTalk();
-      else if(v.action==='tool'){SFX[v.som]();buzz(15);falar(v.fala);}},
+      else if(v.action==='tool'){SFX[v.som]();buzz(15);dica('tool_'+v.fala.slice(0,10),v.fala);}},
     pop(p,c){pop(sc,p,c,10,3);}};
 })();
-function garageButtons(){const car=garagem.car;if(!car)return;$('#qCapo').textContent=car.userData.hoodOpen?'Fechar capô':'Abrir capô';
-  $('#qLigar').textContent=G.motorOn?'Desligar':'Ligar motor';$('#qFarol').classList.toggle('on',car.userData.lightsOn);}
+function garageButtons(){const car=garagem.car;if(!car)return;$('#qCapo').classList.toggle('on',car.userData.hoodOpen);
+  $('#qLigar').classList.toggle('on',G.motorOn);$('#qLigar span').textContent=G.motorOn?'Desligar':'Ligar';$('#qFarol').classList.toggle('on',car.userData.lightsOn);}
 function garageMotor(on){const car=garagem.car;if(!car)return;G.motorOn=on;clearTimeout(blipT);
-  if(on){Motor.start(S.engine);car.userData.engRun=1;setHood(car,true,true);buzz([30,20,60]);falar('Vrum! Motor '+ENGINES[S.engine].nome+' ligado. Segure Acelerar para ouvir ele roncar.');}
+  if(on){Motor.start(S.engine);car.userData.engRun=1;setHood(car,true,true);buzz([30,20,60]);dica('motor_on','Vrum! Segure Acelerar para ouvir o motor roncar.');}
   else{Motor.stop();car.userData.engRun=0;}garageButtons();}
-function choosePaint(i,pt){if(locked(UNLOCK.paint[i])){SFX.bloop();falar('A cor '+PAINT_NAMES[i].toLowerCase()+' libera no nível '+UNLOCK.paint[i]+'. Cada viagem dá XP!');return;}
-  S.paint=i;save();repaint(garagem.car);SFX.select();if(pt)garagem.pop(pt,PAINTS[i]);renderGarage();falar('Pintura '+PAINT_NAMES[i].toLowerCase()+'!',1800);}
-function chooseTire(t){S.tire=t;save();setTire(garagem.car,t,true);garagem.car.userData.pop=1;SFX.wrench();buzz([20,30,20]);renderGarage();falar(TIRES[t].desc);}
+function choosePaint(i,pt,btn){if(locked(UNLOCK.paint[i])){bloqueado(UNLOCK.paint[i],btn);return;}
+  S.paint=i;save();repaint(garagem.car);SFX.select();garagem.pop(pt||new THREE.Vector3(0,2.2,0),PAINTS[i]);renderGarage();}
+function chooseTire(t){S.tire=t;save();setTire(garagem.car,t,true);garagem.car.userData.pop=1;SFX.wrench();buzz([20,30,20]);renderGarage();dica('pneu_'+t,TIRES[t].desc);}
 function tireCard(t,extra){const d=TIRES[t];return '<button class="opt'+(S.tire===t?' on':'')+'" data-tire="'+t+'"><b>'+d.nome+'</b>'+(extra||('<span class="fx good">Leve: '+d.leve+'</span><span class="fx bad">Pesa: '+d.pesa+'</span>'))+'</button>';}
 function lockedCard(attr,k,on,title,lv,info){const lk=locked(lv);return '<button class="opt'+(on?' on':'')+(lk?' locked':'')+'" '+attr+'="'+k+'"><b>'+title+'</b>'+(lk?'<span class="lk">Nível '+lv+'</span>':'<span class="fx">'+info+'</span>')+'</button>';}
-function renderGarage(){$('#gTires').innerHTML=Object.keys(TIRES).map(t=>tireCard(t)).join('');
-  $('#gPaint').innerHTML=PAINT_CSS.map((c,i)=>{const lk=locked(UNLOCK.paint[i]);return '<button class="sw'+(S.paint===i?' on':'')+(lk?' lock':'')+'" data-paint="'+i+'" style="background:'+c+'" aria-label="'+PAINT_NAMES[i]+(lk?', bloqueada':'')+'">'+(lk?'Nv '+UNLOCK.paint[i]:'')+'</button>';}).join('');
-  $('#gEng').innerHTML=Object.keys(ENGINES).map(k=>{const E=ENGINES[k];return lockedCard('data-eng',k,S.engine===k,E.nome,UNLOCK.eng[k],E.cil+' cilindros'+(E.mult>1?' · +'+Math.round((E.mult-1)*100)+'%':''));}).join('');
-  $('#gSusp').innerHTML=Object.keys(SUSP).map(k=>lockedCard('data-susp',k,S.susp===k,SUSP[k].nome,UNLOCK.susp[k],k==='alta'?'Levanta o carro':k==='baixa'?'Rente ao chão':'Equilibrada')).join('');
-  $('#gCarro').innerHTML=Object.keys(CARROS).map(k=>lockedCard('data-car',k,S.carro===k,CARROS[k].nome,lvOf(CARROS[k]),CARROS[k].info)).join('');
-  $('#gCambio').innerHTML=Object.keys(CAMBIO).map(k=>lockedCard('data-cb',k,S.cambio===k,CAMBIO[k].nome,UNLOCK.cambio[k],CAMBIO[k].info)).join('');
-  const E=ENGINES[S.engine];$('#engNote').textContent=E.mult>1?'rendimento +'+Math.round((E.mult-1)*100)+'% de XP e blocos':'rendimento normal';garageButtons();renderResgates();}
-$('#gTires').addEventListener('click',e=>{const b=e.target.closest('[data-tire]');if(b)chooseTire(b.dataset.tire);});
-$('#gPaint').addEventListener('click',e=>{const b=e.target.closest('[data-paint]');if(b)choosePaint(+b.dataset.paint);});
-$('#gEng').addEventListener('click',e=>{const b=e.target.closest('[data-eng]');if(!b)return;const k=b.dataset.eng,car=garagem.car;
-  if(locked(UNLOCK.eng[k])){SFX.bloop();falar('O motor '+ENGINES[k].nome+' libera no nível '+UNLOCK.eng[k]+'. Cada viagem dá XP!');return;}
-  if(S.engine!==k){S.engine=k;save();setEngine(car,k,true);SFX.wrench();buzz([20,30,20]);if(G.motorOn){Motor.start(k);car.userData.engRun=1;}}
-  setHood(car,true,true);renderGarage();falar(ENGINES[k].desc);});
-$('#gSusp').addEventListener('click',e=>{const b=e.target.closest('[data-susp]');if(!b)return;const k=b.dataset.susp,car=garagem.car;
-  if(locked(UNLOCK.susp[k])){SFX.bloop();falar('A suspensão alta libera no nível '+UNLOCK.susp[k]+'.');return;}
-  const up=SUSP[k].ride>SUSP[S.susp].ride;S.susp=k;save();car.userData.susp=k;SFX[up?'springUp':'springDown']();buzz(25);renderGarage();falar(SUSP[k].desc);});
-$('#gCarro').addEventListener('click',e=>{const b=e.target.closest('[data-car]');if(!b)return;const k=b.dataset.car,C=CARROS[k];
-  if(locked(lvOf(C))){SFX.bloop();falar('O '+C.nome+' libera no nível '+lvOf(C)+'. Cada viagem dá XP!');return;}
-  if(S.carro!==k){S.carro=k;save();garagem.swapCar();SFX.horn();buzz([30,20,60]);}renderGarage();falar(C.desc);});
-$('#gCambio').addEventListener('click',e=>{const b=e.target.closest('[data-cb]');if(!b)return;chooseCambio(b.dataset.cb,'garagem');});
-function chooseCambio(k,where){if(!CAMBIO[k])return;if(locked(UNLOCK.cambio[k])){SFX.bloop();falar('O câmbio com torque libera no nível '+UNLOCK.cambio[k]+'.');return;}
+let garTab='carro';
+const GAR_TITLE={carro:'CARRO',pecas:'PEÇAS',pneus:'PNEUS',pintura:'PINTURA'};
+function renderGarage(reset){railOn('#gRail',garTab);let secs;
+  if(garTab==='carro')secs=[{items:Object.keys(CARROS).map(k=>({k:'car:'+k,nome:CARROS[k].nome,svg:TH.car(k,PAINTS[S.paint]),on:S.carro===k,lv:lvOf(CARROS[k])}))}];
+  else if(garTab==='pecas')secs=[
+    {label:'MOTOR',items:Object.keys(ENGINES).map(k=>({k:'eng:'+k,nome:ENGINES[k].nome,svg:TH.engine(k),on:S.engine===k,lv:UNLOCK.eng[k],tag:ENGINES[k].mult>1?'+'+Math.round((ENGINES[k].mult-1)*100)+'%':''}))},
+    {label:'CÂMBIO',items:Object.keys(CAMBIO).map(k=>({k:'cb:'+k,nome:CAMBIO[k].nome,svg:TH.cambio(k),on:S.cambio===k,lv:UNLOCK.cambio[k]}))},
+    {label:'MOLAS',items:Object.keys(SUSP).map(k=>({k:'susp:'+k,nome:SUSP[k].nome,svg:TH.susp(k),on:S.susp===k,lv:UNLOCK.susp[k]}))}];
+  else if(garTab==='pneus')secs=[{items:Object.keys(TIRES).map(t=>({k:'tire:'+t,nome:TIRES[t].nome,svg:TH.tire(t),on:S.tire===t}))}];
+  else secs=[{items:PAINTS.map((c,i)=>({k:'paint:'+i,nome:PAINT_NAMES[i],svg:TH.swatch(PAINT_CSS[i]),on:S.paint===i,lv:UNLOCK.paint[i]}))}];
+  setStrip('#gStrip',GAR_TITLE[garTab],secs,reset);garageButtons();renderResgates();}
+$('#gRail').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;garTab=b.dataset.cat;SFX.select();renderGarage(true);});
+$('#gResg').addEventListener('click',()=>{SFX.select();renderResgates();openModal('#M-resgates');});
+$('#gStrip').addEventListener('click',e=>{const btn=e.target.closest('[data-k]');if(!btn)return;const [cat,k]=btn.dataset.k.split(':'),car=garagem.car;
+  if(cat==='car'){const C=CARROS[k];if(locked(lvOf(C))){bloqueado(lvOf(C),btn);return;}if(S.carro!==k){S.carro=k;save();garagem.swapCar();SFX.horn();buzz([30,20,60]);dica('car_'+k,C.desc);}renderGarage();}
+  else if(cat==='eng'){if(locked(UNLOCK.eng[k])){bloqueado(UNLOCK.eng[k],btn);return;}
+    if(S.engine!==k){S.engine=k;save();setEngine(car,k,true);SFX.wrench();buzz([20,30,20]);if(G.motorOn){Motor.start(k);car.userData.engRun=1;}}else blip(car);
+    setHood(car,true,true);renderGarage();dica('eng_'+k,ENGINES[k].desc);}
+  else if(cat==='cb')chooseCambio(k,'garagem',btn);
+  else if(cat==='susp'){if(locked(UNLOCK.susp[k])){bloqueado(UNLOCK.susp[k],btn);return;}
+    const up=SUSP[k].ride>SUSP[S.susp].ride;S.susp=k;save();car.userData.susp=k;SFX[up?'springUp':'springDown']();buzz(25);renderGarage();dica('susp_'+k,SUSP[k].desc);}
+  else if(cat==='tire')chooseTire(k);
+  else if(cat==='paint')choosePaint(+k,null,btn);});
+function chooseCambio(k,where,btn){if(!CAMBIO[k])return;if(locked(UNLOCK.cambio[k])){if(btn)bloqueado(UNLOCK.cambio[k],btn);else{SFX.bloop();aviso('Libera no nível '+UNLOCK.cambio[k],'lock');}return;}
   const ch=S.cambio!==k;S.cambio=k;save();SFX.wrench();buzz([20,30,20]);
   if(where==='garagem'){const car=garagem.car;if(car&&ch){setEngine(car,S.engine,true);if(k==='torque')setHood(car,true,true);}renderGarage();}else renderMarcha();
-  falar(k==='torque'?CAMBIO.torque.desc:'Câmbio normal: sem torque extra. A subida fica como é, e o gelo também.');}
+  if(k==='torque')dica('cb_torque',CAMBIO.torque.desc+' Mas no gelo ela patina.');}
 $('#qCapo').addEventListener('click',()=>{const car=garagem.car;if(car)setHood(car,!car.userData.hoodOpen);});
 $('#qLigar').addEventListener('click',()=>garageMotor(!G.motorOn));
 $('#qFarol').addEventListener('click',()=>{const car=garagem.car;if(!car)return;car.userData.lightsOn=!car.userData.lightsOn;applyLights(car);SFX.click();garageButtons();});
-(function(){const b=$('#qAcel');const press=e=>{e.preventDefault();if(!G.motorOn)garageMotor(true);Motor.load=1;buzz(30);};const rel=()=>{Motor.load=0;};
+(function(){const b=$('#qAcel');const press=e=>{e.preventDefault();if(!G.motorOn)garageMotor(true);Motor.load=1;b.classList.add('on');buzz(30);};const rel=()=>{Motor.load=0;b.classList.remove('on');};
   b.addEventListener('pointerdown',press);['pointerup','pointercancel','pointerleave'].forEach(n=>b.addEventListener(n,rel));b.addEventListener('contextmenu',e=>e.preventDefault());})();
-$$('.tab').forEach(b=>b.addEventListener('click',()=>{const pn=b.closest('.panel');pn.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));pn.querySelectorAll('[data-pane]').forEach(x=>x.hidden=x.dataset.pane!==b.dataset.tab);}));
-function showTab(layer,k){const b=$(layer+' .tab[data-tab="'+k+'"]');if(b)b.click();}
-$$('.part').forEach(p=>p.addEventListener('click',()=>{p.classList.remove('wob');void p.offsetWidth;p.classList.add('wob');SFX.select();falar(p.dataset.say);}));
 
 /* ---------------- conquistas (estante de troféus) ---------------- */
 const totalMin=()=>S.log.reduce((a,v)=>a+(v.min||0),0);
@@ -1344,16 +1486,16 @@ const casa=(function(){
   function poke(){idle=0;stretched=false;}
   function bounce(o){o.userData.b=1;}
   return{scene:sc,
-    enter(){viewShift=camera.aspect<1?.12:.1;document.body.style.setProperty('--narr-top','calc(env(safe-area-inset-top,0px) + 120px)');resize();rebuild();renderCasa();poke();
-      const novos=checkTrofeus();buildTrofeus();buildRug();setCh(0);
+    enter(){viewShift=camera.aspect<1?.03:.1;document.body.style.setProperty('--narr-top','calc(env(safe-area-inset-top,0px) + 76px)');resize();rebuild();renderCasa();poke();
+      const novos=checkTrofeus();buildTrofeus();buildRug();setCh(0);setHint('casa',v=>tv.localToWorld(v.set(0,1.66,.1)));
       setTimeout(()=>{if(novos.length)falar('Troféu novo na estante: '+novos.map(t=>t.nome).join(', ')+'!');
-        else falar('Esta é a sua casa! Toque no avatar para ele reagir. E cuidado: se girar rápido demais, ele fica tonto!');},300);},
+        else dica('casa_ola','Esta é a sua casa! Toque no avatar e nas coisas do quarto. Os botões da direita trocam o visual.');},300);},
     exit(){setCh(0);},resize(){fit();},
     update(dt,t){idle+=dt;if(!down){rot+=vel*dt;spin+=Math.abs(vel*dt);vel=lerp(vel,idle>2?.2:0,dt*.8);}spin*=Math.pow(.35,dt);ped.rotation.y=rot;
       if(av){const u=av.userData;
-        if(spin>9&&!(u.act&&u.act.name==='dizzy')){spin=0;vel*=.3;poke();playAct(av,'dizzy',3.2,['sit',1.8]);SFX.dizzy();buzz([40,60,40,60,40]);falar('Ih, girou demais! Ele ficou tonto.');}
+        if(spin>9&&!(u.act&&u.act.name==='dizzy')){spin=0;vel*=.3;poke();playAct(av,'dizzy',3.2,['sit',1.8]);SFX.dizzy();buzz([40,60,40,60,40]);}
         if(!u.act&&idle>12&&!stretched){stretched=true;playAct(av,'stretch',2);SFX.yawn();}
-        if(!u.act&&idle>28&&!ch){playAct(av,'sleep',9999);falar('Ele cochilou. Toque nele para acordar.');}
+        if(!u.act&&idle>28&&!ch){playAct(av,'sleep',9999);}
         if(u.act&&u.act.name==='sleep'){snoreT-=dt;if(snoreT<=0){snoreT=2.4;SFX.snore();}}
         animAvatar(av,dt,t);}
       if(ch){tvClock+=dt;chT+=dt;if(chT>1/15){chT=0;drawTV(tvClock);}}
@@ -1365,8 +1507,8 @@ const casa=(function(){
     tap(e){const hit=pick(e,[av,...items,rug]);if(!hit.length)return;const o=actionOf(hit[0].object);if(!o)return;const a=o.userData.action;
       if(a==='avatar'){const u=av.userData,now=performance.now();taps=taps.filter(x=>now-x<2500);taps.push(now);poke();
         pop(sc,hit[0].point,[0xffd23f,0x3ff0ff,0xff5a4e],8,3,.12);buzz(15);
-        if(u.act&&u.act.name==='sleep'){playAct(av,'startle',.7);SFX.boing();falar('Acordou! Ele estava tirando um cochilo.');return;}
-        if(taps.length>=6){taps=[];playAct(av,'annoyed',2.4);SFX.hmph();buzz([30,40,30]);falar('Ei, calma! De tanto cutucão ele ficou bravo.');return;}
+        if(u.act&&u.act.name==='sleep'){playAct(av,'startle',.7);SFX.boing();return;}
+        if(taps.length>=6){taps=[];playAct(av,'annoyed',2.4);SFX.hmph();buzz([30,40,30]);return;}
         if(u.act&&(u.act.name==='dizzy'||u.act.name==='annoyed'))return;
         const part=partOf(hit[0].object);
         if(part==='head'){playAct(av,'jump',.8);SFX.boing();}
@@ -1377,39 +1519,49 @@ const casa=(function(){
       if(a==='trofeu'){const t=TROF.find(x=>x.id===o.userData.id),ok=S.trof.includes(t.id);o.userData.b=1;
         if(ok){SFX.fanfare();pop(sc,hit[0].point,[TIER[t.tier][0],0xffffff],12,3,.1);falar('Troféu '+t.nome+'! '+t.desc.replace(/\.$/,'')+': conseguido!');}
         else{SFX.bloop();falar('Esse troféu ainda está apagado. Para ganhar: '+t.desc.charAt(0).toLowerCase()+t.desc.slice(1));}return;}
-      if(a==='estante'){bounce(o);openTrofeus();falar('A estante de troféus! Cada conquista acende um troféu.');return;}
+      if(a==='estante'){bounce(o);openTrofeus();return;}
       if(a==='tv'){bounce(o);setCh((ch+1)%4);SFX.click();buzz(10);
         if(ch===1)falar('Canal da Vila! Você já acendeu '+S.torres+(S.torres===1?' torre':' torres')+' e pedalou '+Math.round(totalMin())+' minutos.');
-        else if(ch===2){falar('Desenho dos blocos!',1800);if(av&&!av.userData.act)playAct(av,'dance',2.4);}
-        else if(ch===3)falar('O caminho da viagem: plano, subida, descida, lama, descida, gelo e reta final.');
-        else falar('TV desligada.',1500);return;}
-      if(a==='espelho'){bounce(o);SFX.select();buzz(15);if(av)playAct(av,'pose',2);falar('Olha você no espelho! Para trocar o visual, use as abas Roupa e Acessórios.');showTab('#L-casa','roupa');return;}
-      if(a==='tapete'){S.tapete=(S.tapete+1)%4;save();buildRug();SFX.pop();buzz(15);pop(sc,hit[0].point,[0xffd23f,0xff5a4e,0x3ff0ff],12,3,.12);if(av)playAct(av,'jump',.8);falar('Tapete '+RUGS[S.tapete].toLowerCase()+'!',1800);return;}
-      bounce(o);SFX[o.userData.som]();falar(o.userData.fala);if(o.userData.bed){playAct(av,'sleep',6);}if(o.userData.roupa)showTab('#L-casa','roupa');},
+        else if(ch===2){if(av&&!av.userData.act)playAct(av,'dance',2.4);}
+        else if(ch===3)dica('tv_caminho','O caminho da viagem: plano, subida, descida, lama, descida, gelo e reta final.');return;}
+      if(a==='espelho'){bounce(o);SFX.select();buzz(15);if(av)playAct(av,'pose',2);dica('espelho','Olha você no espelho! Escolha uma roupa nova.');casaCat('roupa');return;}
+      if(a==='tapete'){S.tapete=(S.tapete+1)%4;save();buildRug();SFX.pop();buzz(15);pop(sc,hit[0].point,[0xffd23f,0xff5a4e,0x3ff0ff],12,3,.12);if(av)playAct(av,'jump',.8);return;}
+      bounce(o);SFX[o.userData.som]();dica('casa_'+o.userData.som,o.userData.fala);if(o.userData.bed){playAct(av,'sleep',6);}if(o.userData.roupa)casaCat('roupa');},
     doAct(name){if(!av)return;if(name==='trofeus'){openTrofeus();return;}poke();taps=[];const M={wave:[1.6,'select'],jump:[.8,'boing'],dance:[2.6,'music'],jacks:[5/1.1+.15,'select'],sit:[4,'bloop'],pose:[2,'select']};const m=M[name];
-      playAct(av,name,m[0]);SFX[m[1]]();if(name==='jacks')falar('Polichinelo! Faz junto com ele: cinco vezes!',2600);},
+      playAct(av,name,m[0]);SFX[m[1]]();if(name==='jacks')falar('Faz junto com ele: cinco polichinelos!',2600);},
     react(){if(av){poke();playAct(av,'pose',1.6);}},
     rebuild,setAnchors(v){markers.forEach(m=>m.visible=v);}};
 })();
-function itemCard(attr,k,on,title,lv,info){const lk=locked(lv);return '<button class="opt'+(on?' on':'')+(lk?' locked':'')+'" '+attr+'="'+k+'"><b style="font-size:17px">'+title+'</b>'+(lk?'<span class="lk">Nível '+lv+'</span>':(info?'<span class="fx">'+info+'</span>':''))+'</button>';}
-function renderCasa(){$('#aBody').innerHTML=Object.keys(BODIES).map(k=>{const B2=BODIES[k];return itemCard('data-body',k,S.body===k,B2.nome,lvOf(B2),'Cabeça '+B2.head.toFixed(1).replace('.',',')+'×');}).join('');
-  $('#aRoupa').innerHTML=Object.keys(ROUPAS).map(k=>itemCard('data-roupa',k,S.roupa===k,ROUPAS[k].nome,lvOf(ROUPAS[k]),'')).join('');
-  $('#aSapato').innerHTML=Object.keys(SAPATOS).map(k=>itemCard('data-sapato',k,S.sapato===k,SAPATOS[k].nome,lvOf(SAPATOS[k]),'')).join('');
-  $('#aOculos').innerHTML=Object.keys(OCULOS).map(k=>itemCard('data-oculos',k,S.oculos===k,OCULOS[k].nome,lvOf(OCULOS[k]),'')).join('');
-  $('#aHat').innerHTML=Object.keys(HATS).map(k=>'<button class="opt'+(S.hat===k?' on':'')+'" data-hat="'+k+'"><b style="font-size:16px;margin:0">'+HATS[k]+'</b></button>').join('');$('#aAnchors').checked=!!S.anchors;}
-/* escolher corpo, roupa, sapato ou óculos (com bloqueio por nível) */
-function wear(slot,k,table,lockMsg){const it=table[k];if(!it)return;const lv=lvOf(it);
-  if(locked(lv)){SFX.bloop();falar(lockMsg(it)+' no nível '+lv+'. Cada viagem dá XP!');return;}
-  if(S[slot]===k)return;S[slot]=k;save();casa.rebuild();renderCasa();SFX.wrench();buzz([20,30,20]);pop(casa.scene,new THREE.Vector3(0,2,.4),[0xffd23f,0xffffff,0x3ff0ff],14,4);casa.react();
-  if(it.desc)falar(it.desc);}
-$('#aBody').addEventListener('click',e=>{const b=e.target.closest('[data-body]');if(b)wear('body',b.dataset.body,BODIES,it=>'O corpo '+it.nome+' libera');});
-$('#aRoupa').addEventListener('click',e=>{const b=e.target.closest('[data-roupa]');if(b)wear('roupa',b.dataset.roupa,ROUPAS,it=>'A roupa '+it.nome.toLowerCase()+' libera');});
-$('#aSapato').addEventListener('click',e=>{const b=e.target.closest('[data-sapato]');if(b)wear('sapato',b.dataset.sapato,SAPATOS,it=>'O sapato '+it.nome.toLowerCase()+' libera');});
-$('#aOculos').addEventListener('click',e=>{const b=e.target.closest('[data-oculos]');if(b)wear('oculos',b.dataset.oculos,OCULOS,it=>'Os óculos '+it.nome.toLowerCase()+' liberam');});
-$('#aHat').addEventListener('click',e=>{const b=e.target.closest('[data-hat]');if(!b)return;S.hat=b.dataset.hat;save();casa.rebuild();renderCasa();SFX.wrench();
-  if(S.hat!=='nenhum')falar('O '+HATS[S.hat].toLowerCase()+' se prendeu no ponto da cabeça e ficou do tamanho certo.');});
-$('#aAnchors').addEventListener('change',e=>{S.anchors=e.target.checked;save();casa.setAnchors(S.anchors);SFX.select();if(S.anchors)falar('Os pontos rosa são os encaixes: cabeça, mãos, pés e costas. Todo item se prende em um deles.');});
-$('#aActs').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b)casa.doAct(b.dataset.act);});
+let casaTab='acoes';
+const ACOES=[['wave','Acenar','hand'],['jump','Pular','up'],['dance','Dançar','note'],['jacks','Polichinelo','jacks'],['sit','Sentar','sit'],['pose','Pose','star']];
+const CASA_TITLE={acoes:'AÇÕES',corpo:'CORPO',roupa:'ROUPA',acess:'ACESSÓRIOS'};
+function casaCat(k){casaTab=k;renderCasa(true);}
+function renderCasa(reset){railOn('#aRail',casaTab);let secs;
+  if(casaTab==='acoes')secs=[{items:ACOES.map(([k,n,i])=>({k:'act:'+k,nome:n,svg:TH.act(i)})).concat([{k:'anc:x',nome:'Encaixes',svg:TH.act('target'),on:!!S.anchors}])}];
+  else if(casaTab==='corpo')secs=[{items:Object.keys(BODIES).map(k=>({k:'body:'+k,nome:BODIES[k].nome,svg:TH.body(BODIES[k]),on:S.body===k,lv:lvOf(BODIES[k])}))}];
+  else if(casaTab==='roupa')secs=[
+    {label:'ROUPA',items:Object.keys(ROUPAS).map(k=>{const R=ROUPAS[k],B2=BODIES[S.body]||BODIES.menino;
+      return {k:'roupa:'+k,nome:R.nome,svg:TH.shirt(hx(R.coat!=null?R.coat:R.shirt!=null?R.shirt:B2.shirt),R.stripe?hx(R.stripe):R.cape?hx(R.cape):R.piloto?'#ffffff':'',''),on:S.roupa===k,lv:lvOf(R)};})},
+    {label:'SAPATOS',items:Object.keys(SAPATOS).map(k=>{const Z=SAPATOS[k];return {k:'sapato:'+k,nome:Z.nome,svg:TH.shoe(hx(Z.c),{risca:Z.risca&&hx(Z.risca),alto:Z.alto,mola:Z.mola}),on:S.sapato===k,lv:lvOf(Z)};})}];
+  else secs=[
+    {label:'CABEÇA',items:Object.keys(HATS).map(k=>({k:'hat:'+k,nome:HATS[k].nome||HATS[k],svg:TH.hat(k),on:S.hat===k,lv:lvOf(HATS[k])}))},
+    {label:'ÓCULOS',items:Object.keys(OCULOS).map(k=>({k:'oculos:'+k,nome:OCULOS[k].nome,svg:TH.glasses(OCULOS[k]),on:S.oculos===k,lv:lvOf(OCULOS[k])}))}];
+  setStrip('#aStrip',CASA_TITLE[casaTab],secs,reset);}
+/* vestir corpo, roupa, sapato, chapéu ou óculos (com bloqueio por nível) */
+function wear(slot,k,table,btn){const it=table[k];if(!it)return;const lv=lvOf(it);
+  if(locked(lv)){bloqueado(lv,btn);return;}
+  if(S[slot]===k)return;S[slot]=k;save();casa.rebuild();renderCasa();SFX.wrench();buzz([20,30,20]);pop(casa.scene,new THREE.Vector3(0,2.2,.4),[0xffd23f,0xffffff,0x3ff0ff],14,4);casa.react();
+  if(it.desc)dica('it_'+slot+'_'+k,it.desc);}
+$('#aRail').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;SFX.select();casaCat(b.dataset.cat);});
+$('#aTrof').addEventListener('click',()=>{SFX.select();openTrofeus();});
+$('#aStrip').addEventListener('click',e=>{const btn=e.target.closest('[data-k]');if(!btn)return;const [cat,k]=btn.dataset.k.split(':');
+  if(cat==='act')casa.doAct(k);
+  else if(cat==='anc'){S.anchors=!S.anchors;save();casa.setAnchors(S.anchors);SFX.select();renderCasa();dica('encaixes','Os pontos rosa são os encaixes: cabeça, mãos, pés e costas. Todo item se prende em um deles.');}
+  else if(cat==='body')wear('body',k,BODIES,btn);
+  else if(cat==='roupa')wear('roupa',k,ROUPAS,btn);
+  else if(cat==='sapato')wear('sapato',k,SAPATOS,btn);
+  else if(cat==='hat')wear('hat',k,HATS,btn);
+  else if(cat==='oculos')wear('oculos',k,OCULOS,btn);});
 
 /* ================= CENA: LABORATÓRIO DE INVENÇÕES ================= */
 const LAB_FATOS=['Quando você pedala, seus músculos transformam a comida em energia de movimento!','O coração é um músculo. Pedalar deixa ele mais forte, igual a um motor bem cuidado.',
@@ -1419,7 +1571,7 @@ const LAB_FATOS=['Quando você pedala, seus músculos transformam a comida em en
 const lab=(function(){
   const sc=new THREE.Scene();lights(sc,0x241d4a);
   const cells=[];for(let x=-6;x<=6;x++)for(let z=-4;z<=9;z++)cells.push({x,y:-.1,z,sy:.2,c:(x+z)&1?0xe8f4f8:0x7fd6d0,j:.03});instanced(sc,cells).castShadow=false;
-  box(sc,13,10,.4,0x4a3c86,0,5,-4.6,{shadow:false});box(sc,.4,10,14,0x3d3170,-6.6,5,2.5,{shadow:false});box(sc,.4,10,14,0x3d3170,6.6,5,2.5,{shadow:false});
+  box(sc,13,10,.4,0x4a3c86,0,5,-4.6,{shadow:false});box(sc,.4,10,8,0x3d3170,-6.6,5,-.6,{shadow:false});box(sc,.4,10,8,0x3d3170,6.6,5,-.6,{shadow:false});
   for(let i=0;i<13;i++)box(sc,1,.3,.42,i%2?0x24232b:0x3ff0ff,-6+i,.2,-4.38,{shadow:false,em:i%2?0:0x0a3a40});
   const lamp=new THREE.PointLight(0x9ff7ff,.7,22);lamp.position.set(0,5.2,0);sc.add(lamp);box(sc,3,.14,.6,0xe8fbff,0,5.9,0,{em:0x6aa0b0,shadow:false});
   const items=[];
@@ -1478,16 +1630,16 @@ const lab=(function(){
   /* avatar do piloto, de jaleco ou com a roupa escolhida */
   let av=null,actT=2,yaw=0,vel=0,D=12;const AP=new THREE.Vector3(-1.5,0,1.3);
   function rebuild(){if(av)sc.remove(av);av=buildAvatar(S.body,S.hat,visual());av.position.copy(AP);av.rotation.y=.5;av.scale.setScalar(.62);sc.add(av);}
-  function dist(){const a=camera.aspect,fov=a<1?55:42;camera.fov=fov;return Math.max(10.5,3.25/(Math.tan(fov*Math.PI/360)*a));}
-  function placeCam(){const c=new THREE.Vector3(0,camera.aspect<1?2.1:1.7,-1.4);const el=camera.aspect<1?.3:.36;camera.position.set(c.x+Math.sin(yaw)*D,c.y+D*el,c.z+Math.cos(yaw)*D);camera.lookAt(c);}
+  function dist(){const a=camera.aspect,fov=a<1?55:42;camera.fov=fov;return Math.max(10.5,2.75/(Math.tan(fov*Math.PI/360)*a));}
+  function placeCam(){const c=new THREE.Vector3(0,camera.aspect<1?1.5:1.7,-1.2);const el=camera.aspect<1?.3:.36;camera.position.set(c.x+Math.sin(yaw)*D,c.y+D*el,c.z+Math.cos(yaw)*D);camera.lookAt(c);}
   function celebrate(){maq.userData.run=3.2;SFX.wrench();setTimeout(()=>{SFX.fanfare();buzz([40,30,80]);},900);if(av)playAct(av,'jump',.8);
     setTimeout(()=>{buildCaps();if(capList[0]){capList[0].pop=1;}pop(sc,new THREE.Vector3(0,3.3,-1.5),[0xffd23f,0x3ff0ff,0xff3fae,0xffffff],24,5,.15);},2200);}
   function zap(){coil.userData.zap=1.2;SFX.dizzy();noise(.5,.12,3000);buzz([20,20,20,20,60]);}
   return{scene:sc,celebrate,
-    enter(){viewShift=0;document.body.style.setProperty('--narr-top','calc(env(safe-area-inset-top,0px) + 120px)');resize();rebuild();buildCaps();refreshLab();yaw=0;vel=0;
-      setTimeout(()=>falar('O Laboratório de Invenções! Toque na Máquina de Invenções para escrever a sua ideia maluca. O Mecânico-Chefe deixa ela segura e ela vira missão.'),300);},
+    enter(){viewShift=0;document.body.style.setProperty('--narr-top','calc(env(safe-area-inset-top,0px) + 76px)');resize();rebuild();buildCaps();refreshLab();yaw=0;vel=0;setHint('lab',v=>maq.localToWorld(v.set(0,2.1,.6)));
+      setTimeout(()=>dica('lab_ola','O Laboratório de Invenções! Toque na máquina para escrever uma ideia maluca. O Mecânico-Chefe deixa ela segura e ela vira missão.'),300);},
     exit(){},resize(){D=dist();},
-    update(dt,t){if(!down){yaw+=vel*dt;vel*=Math.pow(.05,dt);yaw=lerp(yaw,clamp(yaw,-.55,.55),dt*4);}placeCam();
+    update(dt,t){if(!down){yaw+=vel*dt;vel*=Math.pow(.05,dt);yaw=lerp(yaw,clamp(yaw,-.32,.32),dt*6);}placeCam();
       /* frascos */
       flasks.forEach(f=>{const u=f.userData;u.boil=Math.max(0,u.boil-dt);if(Math.random()<dt*(u.boil?14:1.6))bubble(f,u.boil>0);u.liq.emissive.copy(new THREE.Color(u.c)).multiplyScalar(.3+.15*Math.sin(t*3+u.i)+(u.boil?.3:0));});
       for(let i=bubbles.length-1;i>=0;i--){const b=bubbles[i];b.l-=dt;b.m.position.y+=b.v*dt;b.m.position.x+=b.dx*dt;b.m.rotation.y+=dt*3;if(b.l<.4)b.m.scale.multiplyScalar(.9);if(b.l<=0){sc.remove(b.m);bubbles.splice(i,1);}}
@@ -1509,14 +1661,14 @@ const lab=(function(){
       if(av){const u=av.userData;actT-=dt;if(actT<=0&&!u.act){actT=3+Math.random()*4;const A=[['look',2.2],['wave',1.6],['stretch',1.6],['pose',2]][Math.floor(Math.random()*4)];playAct(av,A[0],A[1]);}
         av.rotation.y=turn(av.rotation.y,u.act&&u.act.name==='wave'?Math.atan2(camera.position.x-AP.x,camera.position.z-AP.z):.5,dt*4);animAvatar(av,dt,t);}
       items.forEach(o=>{const v=o.userData;if(v.b>0){v.b=Math.max(0,v.b-dt*3);const s=Math.sin(v.b*Math.PI*2)*v.b*.1;o.scale.set(1-s,1+s,1-s);}});},
-    drag(dx){yaw-=dx*.005;vel=-dx*.25;},
+    drag(dx){yaw=clamp(yaw-dx*.005,-.42,.42);vel=-dx*.25;},
     tap(e){const hit=pick(e,[av,...items,caps]);if(!hit.length)return;const o=actionOf(hit[0].object);if(!o)return;const a=o.userData.action;
       if(a==='avatar'){playAct(av,'jump',.8);SFX.boing();buzz(15);pop(sc,hit[0].point,[0xffd23f,0x3ff0ff],8,3,.1);
-        if(S.roupa!=='jaleco')falar(locked(lvOf(ROUPAS.jaleco))?'Um cientista de verdade! O jaleco libera no nível '+lvOf(ROUPAS.jaleco)+'.':'Que tal vestir o jaleco de cientista? Ele fica na Casa, na aba Roupa.');else falar('Cientista pronto para inventar!',1800);return;}
+        return;}
       if(a==='maquina'){o.userData.b=1;SFX.select();openLab();return;}
       if(a==='frasco'){o.userData.b=1;o.userData.boil=1.6;SFX.bloop();tone(300,.3,'sine',.06,500,.15);buzz(15);
-        falar(['Frasco verde: borbulha que nem refrigerante!','Frasco rosa: espuma mágica!','Frasco amarelo: brilha no escuro!'][o.userData.i],2400);return;}
-      if(a==='bobina'){o.userData.b=1;zap();falar('Bzzzt! A bobina solta faíscas de eletricidade. Mas só aqui no laboratório, viu?',3200);return;}
+        return;}
+      if(a==='bobina'){o.userData.b=1;zap();dica('bobina','Bzzzt! A bobina solta faíscas de eletricidade. Mas só aqui no laboratório, viu?',3200);return;}
       if(a==='lousa'){o.userData.b=1;SFX.chime();falar(LAB_FATOS[Math.floor(Math.random()*LAB_FATOS.length)]);return;}
       if(a==='capsula'){const v=S.inv[o.userData.i];if(!v)return;const c=capList[o.userData.i];if(c)c.pop=1;SFX.coin();
         const st=v.adapt?'Virou missão: '+v.adapt:v.st==='Vamos ajustar juntos'?'Quase lá! Converse com o pai para deixar ela segura.':'Esperando o Mecânico-Chefe dar uma olhada.';
@@ -1612,7 +1764,7 @@ function enterSeg(first){const s=ROTA[T.seg],n=nivel(s,S.tire);SFX.chime();buzz(
 function showPit(next){T.pitFor=next;const ns=ROTA[next];$('#pitTitle').textContent='Box! Depois vem '+ns.nome.toLowerCase()+'. Qual pneu?';
   $('#pitTires').innerHTML=Object.keys(TIRES).map(t=>{const n=nivel(ns,t),b=nivel(ns,'__');return tireCard(t,'<span class="fx '+(n<b?'good':n>b?'bad':'')+'">'+ns.nome+': nível '+n+'</span>');}).join('');$('#pit').hidden=false;}
 $('#pitTires').addEventListener('click',e=>{const b=e.target.closest('[data-tire]');if(!b)return;const t=b.dataset.tire;S.tire=t;save();setTire(viagem.car,t,true);viagem.car.userData.pop=1;SFX.wrench();buzz([20,30,20]);
-  const ns=ROTA[T.pitFor];falar('Pneu '+TIRES[t].nome.toLowerCase()+'! No trecho de '+ns.nome.toLowerCase()+' vai ficar no nível '+nivel(ns,t)+'.');$('#pit').hidden=true;updHUD(true);});
+  const ns=ROTA[T.pitFor];aviso(TIRES[t].nome+': '+ns.nome.toLowerCase()+' no nível '+nivel(ns,t));$('#pit').hidden=true;updHUD(true);});
 $('#pitKeep').addEventListener('click',()=>{$('#pit').hidden=true;});
 function updHUD(full){const s=ROTA[T.seg],n=nivel(s,S.tire),d=segDur(T.seg);
   if(full){$('#tName').textContent=s.nome.toUpperCase();$('#tSub').textContent=s.sub;const f=fxText(s,S.tire);$('#tFx').textContent=f.t;$('#tFx').className='t-fx '+f.c;
@@ -1684,21 +1836,21 @@ function openBau(completed){Motor.stop();wakeOff();
 $('#bauBack').addEventListener('click',()=>{SFX.select();closeModal();go('vila');if(T.done)setTimeout(()=>falar('A Torre da Vila ficou mais forte. Olha como ela brilha!'),600);});
 
 /* ---------------- marcha (portão) ---------------- */
-function openMarcha(){openModal('#M-marcha');renderMarcha();falar('Escolha a marcha de hoje e o pneu. O caminho mostra o nível de cada trecho.');}
+function openMarcha(){openModal('#M-marcha');renderMarcha();dica('marcha','Escolha a marcha de hoje e o pneu. O caminho mostra o nível de cada trecho.');}
 function renderMarcha(){$('#gearPick').innerHTML=[1,2,3].map(g=>{const G2=GEARS[g];return '<button class="opt'+(T.gear===g?' on':'')+'" data-g="'+g+'"><b>'+G2.nome+'</b>'+G2.en+'<br>≈'+G2.total+' min · '+G2.ride+' pedalando</button>';}).join('');
   $('#routePrev').innerHTML=ROTA.map((s,i)=>'<div data-si="'+i+'" style="flex:'+s.w+';background:'+PAL[s.t].ui+'"><b>'+nivel(s,S.tire)+'</b>'+s.nome+'</div>').join('');
   $('#tirePick').innerHTML=Object.keys(TIRES).map(t=>tireCard(t)).join('');$('#demoT').checked=S.demo;
   $('#cambioPick').innerHTML=Object.keys(CAMBIO).map(k=>lockedCard('data-cb',k,S.cambio===k,CAMBIO[k].nome,UNLOCK.cambio[k],CAMBIO[k].info)).join('');
   const E=ENGINES[S.engine];$('#mEng').textContent='Motor '+E.nome+(E.mult>1?': +'+Math.round((E.mult-1)*100)+'% de XP e blocos.':': rendimento normal.')+' Troque na Garagem.';}
-$('#gearPick').addEventListener('click',e=>{const b=e.target.closest('[data-g]');if(!b)return;T.gear=+b.dataset.g;SFX.select();renderMarcha();const G2=GEARS[T.gear];falar('Marcha '+G2.nome+': '+G2.en.toLowerCase()+'. Cerca de '+G2.total+' minutos.');});
-$('#tirePick').addEventListener('click',e=>{const b=e.target.closest('[data-tire]');if(!b)return;S.tire=b.dataset.tire;save();SFX.wrench();renderMarcha();falar(TIRES[S.tire].desc);});
+$('#gearPick').addEventListener('click',e=>{const b=e.target.closest('[data-g]');if(!b)return;T.gear=+b.dataset.g;SFX.select();renderMarcha();});
+$('#tirePick').addEventListener('click',e=>{const b=e.target.closest('[data-tire]');if(!b)return;S.tire=b.dataset.tire;save();SFX.wrench();renderMarcha();dica('pneu_'+S.tire,TIRES[S.tire].desc);});
 $('#routePrev').addEventListener('click',e=>{const b=e.target.closest('[data-si]');if(!b)return;const s=ROTA[+b.dataset.si];SFX.select();falar(s.nome+': nível '+nivel(s,S.tire)+'. '+s.sub);});
 $('#cambioPick').addEventListener('click',e=>{const b=e.target.closest('[data-cb]');if(b)chooseCambio(b.dataset.cb,'marcha');});
 $('#demoT').addEventListener('change',e=>{S.demo=e.target.checked;save();});
 $('#bLargar').addEventListener('click',()=>{SFX.select();startTrip();});
 
 /* ---------------- laboratório ---------------- */
-function openLab(){openModal('#M-lab');renderLab();falar('Conte a sua invenção! Pode escrever ou tocar em Falar e contar em voz alta.');}
+function openLab(){openModal('#M-lab');renderLab();}
 $('#bInventar').addEventListener('click',()=>{SFX.select();openLab();});
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function renderLab(){$('#labList').innerHTML=S.inv.map(v=>'<div class="inv" data-tap><b>'+esc(v.nome)+'</b><span class="st'+(v.adapt?'':' wait')+'">'+esc(v.st)+'</span><p>'+esc(v.ideia)+'</p>'+(v.adapt?'<p><b style="font:600 13px var(--font-body)">Adaptação:</b> '+esc(v.adapt)+'</p>':'')+'</div>').join('');}
@@ -1728,7 +1880,7 @@ const p2=n=>String(n).padStart(2,'0');
 const fdate=t=>{const d=new Date(t);return p2(d.getDate())+'/'+p2(d.getMonth()+1)+' '+p2(d.getHours())+':'+p2(d.getMinutes());};
 const unread=()=>S.recados.filter(r=>!r.lido);
 function addRecado(txt,quem){S.recados.unshift({id:uid(),txt,quem:quem||'pai',data:Date.now(),lido:false});if(S.recados.length>60)S.recados.length=60;save();refreshRecados();}
-function refreshRecados(){const n=unread().length,b=$('#gRecado');if(b)b.innerHTML='Recados'+(n?' <span class="badge">'+n+'</span>':'');
+function refreshRecados(){const n=unread().length,b=$('#gRecado i');if(b){const o=b.querySelector('.badge');if(o)o.remove();if(n)b.insertAdjacentHTML('beforeend','<span class="badge">'+n+'</span>');}
   if(typeof garagem!=='undefined'&&garagem.mech)garagem.mech.userData.alert=n>0;}
 function mechTalk(){const u=unread();SFX.wrench();buzz([20,30,20]);
   if(u.length){const r=u[u.length-1];r.lido=true;save();refreshRecados();const rest=u.length-1;
@@ -2107,7 +2259,7 @@ let current=null,curName='';
 function go(name){if(current&&current.exit)current.exit();clearTimeout(blipT);Motor.stop();G.motorOn=false;
   if(curName==='viagem'&&name!=='viagem'){wakeOff();T.on=false;$('#pit').hidden=true;}
   curName=name;current=SCENES[name];Object.keys(SCENES).forEach(k=>$('#L-'+k).hidden=k!==name);
-  $('#narr').classList.remove('on');current.resize&&current.resize();current.enter&&current.enter();refreshVila();}
+  fecharFala();$('#tapHint').style.display='none';current.resize&&current.resize();current.enter&&current.enter();refreshVila();}
 $$('[data-go]').forEach(b=>b.addEventListener('click',()=>{SFX.select();go(b.dataset.go);}));
 $('#bViajar').addEventListener('click',()=>{SFX.chime();openMarcha();});
 $('#bMestre').addEventListener('click',()=>{SFX.select();openMestre();});
@@ -2115,7 +2267,7 @@ $('#bHist').addEventListener('click',()=>{SFX.select();go('historia');});
 $('#bHistIntro').addEventListener('click',()=>{ac();SFX.chime();$('#intro').hidden=true;go('historia');});
 const toggleSom=()=>{S.somOn=!S.somOn;save();refreshVila();if(S.somOn)SFX.select();};
 $('#bSom').addEventListener('click',toggleSom);$('#vSom').addEventListener('click',toggleSom);
-$('#bVoz').addEventListener('click',()=>{S.vozOn=!S.vozOn;save();refreshVila();if(!S.vozOn){vozStop();try{speechSynthesis.cancel();}catch(e){}}falar(S.vozOn?'Voz ligada! Oi, piloto!':'Voz desligada. Vou mostrar só o texto.');});
+$('#bMus').addEventListener('click',()=>{S.musOn=!S.musOn;save();refreshVila();SFX.select();if(typeof Musica!=='undefined')Musica.sync();});
 
 document.addEventListener('pointerdown',e=>{const el=e.target.closest('button,[data-tap],.pin,.sw,.opt');if(!el)return;ac();if(el.tagName!=='BUTTON')SFX.tap();buzz(8);
   if(el.hasAttribute('data-tap')){el.classList.remove('wob');void el.offsetWidth;el.classList.add('wob');}},true);
@@ -2123,19 +2275,19 @@ document.addEventListener('pointerdown',e=>{const el=e.target.closest('button,[d
 let down=null;
 canvas.addEventListener('pointerdown',e=>{ac();down={x:e.clientX,y:e.clientY,lx:e.clientX};try{canvas.setPointerCapture(e.pointerId);}catch(_){}});
 canvas.addEventListener('pointermove',e=>{if(!down)return;const dx=e.clientX-down.lx;down.lx=e.clientX;if(Math.abs(e.clientX-down.x)>6&&current&&current.drag)current.drag(dx);});
-const endDrag=e=>{if(!down)return;const moved=Math.hypot(e.clientX-down.x,e.clientY-down.y);down=null;if(moved<10&&current&&current.tap)current.tap(e);};
+const endDrag=e=>{if(!down)return;const moved=Math.hypot(e.clientX-down.x,e.clientY-down.y);down=null;if(moved<10&&current&&current.tap){if(HINT.get&&HINT.scene===curName)clearHint();current.tap(e);}};
 canvas.addEventListener('pointerup',endDrag);canvas.addEventListener('pointercancel',()=>{down=null;});
 
 (function(){const a='VILA',b='CÚBICA',cols=['#ff5a4e','#ffd23f','#3ff0ff','#5ccb3a','#b05cff','#ff7ac8'];
   const mk=(w,o)=>[...w].map((c,i)=>{const col=cols[(i+o)%cols.length];return '<i style="background:'+col+';animation-delay:'+((i+o)*.12)+'s'+(col==='#ffd23f'||col==='#3ff0ff'?';color:#1c2448':'')+'">'+c+'</i>';}).join('');
   $('#logoA').innerHTML=mk(a,0);$('#logoB').innerHTML=mk(b,4);})();
 $('#bStart').addEventListener('click',()=>{ac();SFX.fanfare();$('#intro').hidden=true;go('vila');
-  setTimeout(()=>falar(S.torres?'Bem-vindo de volta, piloto! Toque no chão para passear, ou no Portão do Mapa para viajar.':'Oi! Eu sou a Faísca. A vila está sem energia. Toque no Portão do Mapa para viajar. E toque no chão para o seu avatar passear!'),500);});
+  setTimeout(()=>dica('vila_ola','Oi! Eu sou a Faísca. A vila está sem energia. Toque em Viajar para levar energia até a torre. E toque no chão para o seu avatar passear!'),500);});
 
 let last=performance.now();
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=now/1000;
   Motor.tick(dt);
-  if(current&&document.visibilityState==='visible'){if(curName==='viagem')tripTick(dt);current.update(dt,t);updParts(dt);renderer.render(current.scene,camera);}
+  if(current&&document.visibilityState==='visible'){if(curName==='viagem')tripTick(dt);current.update(dt,t);updParts(dt);renderer.render(current.scene,camera);hintTick();}
   requestAnimationFrame(frame);}
 window.addEventListener('resize',resize);
 current=vila;curName='vila';resize();vila.resize();
