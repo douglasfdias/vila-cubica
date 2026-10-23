@@ -1,6 +1,6 @@
 # Vila Cúbica
 
-Protótipo do app de movimento do Israel. Um arquivo só (`index.html`), sem etapa de build.
+Protótipo do app de movimento para crianças. Um arquivo só (`index.html`), sem etapa de build.
 
 - Abrir: o endereço do GitHub Pages deste repositório.
 - Instalar na tela inicial: no Chrome do celular, menu ⋮ > Instalar app (ou Adicionar à tela inicial).

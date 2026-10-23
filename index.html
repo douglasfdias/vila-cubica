@@ -779,7 +779,7 @@ input[type=range]{width:100%;accent-color:var(--sun)}
     <p><b style="font:400 18px var(--font-display);color:var(--sun)">A Vila ficou sem energia.</b></p>
     <p>As torres apagaram e só existe um jeito de religar: alguém que gere energia pedalando.</p>
     <p>Esse alguém é você. Seu carro leva o Núcleo de Energia até cada torre, e cada torre acesa traz a vila de volta.</p>
-    <p class="small">Protótipo para testar com o Israel. Nomes, personagens e cores ainda vão ser escolhidos por ele.</p>
+    <p class="small">Protótipo em teste. Nomes, personagens e cores ainda vão ser escolhidos por você.</p>
   </div>
   <div class="intro-btns"><button class="btn big" id="bHistIntro">Ver a história</button><button class="btn big ghost" id="bStart">Jogar</button></div>
 </div>
@@ -2377,20 +2377,20 @@ function calRows(){const seen={};return ROTA.filter(s=>seen[s.t]?0:(seen[s.t]=1)
 const VIEWS={
   niveis:()=>'<div class="dcard"><b>Nível máximo confortável: <span id="maxLbl">'+S.nivMax+'</span></b><input type="range" id="maxR" min="4" max="10" step="1" value="'+S.nivMax+'" aria-label="Nível máximo confortável"><p>Nenhum trecho passa desse nível, qualquer que seja o pneu ou o ajuste.</p></div>'
     +'<div class="dcard"><b>Ajuste por terreno</b><p>Some ou tire até 2 níveis de um terreno. A descida só pode subir 1, porque é recarga e descanso. Os números mostram o nível final com cada pneu e o câmbio atual ('+CAMBIO[S.cambio].nome.toLowerCase()+'). O torque tira 1 da subida e põe 1 no gelo.</p><div id="calBody">'+calRows()+'</div></div>',
-  inv:()=>!S.inv.length?'<div class="dcard"><p>Nenhuma invenção ainda. Quando o Israel mandar uma, ela aparece aqui.</p></div>':S.inv.map((v,i)=>{
+  inv:()=>!S.inv.length?'<div class="dcard"><p>Nenhuma invenção ainda. Quando o piloto mandar uma, ela aparece aqui.</p></div>':S.inv.map((v,i)=>{
     const pend=!v.adapt;
     return '<div class="dcard"><b>'+esc(v.nome)+'<span class="pill'+(pend?' wait':'')+'">'+esc(v.st)+'</span></b><p>Ideia: '+esc(v.ideia)+'</p>'
       +(pend?'<div class="field"><textarea id="ad'+i+'" maxlength="200" aria-label="Adaptação segura" placeholder="Como deixar segura? Ex.: banda elástica na cintura, o pai segura a ponta."></textarea></div><div class="row"><button class="btn sm" data-inv="ok" data-i="'+i+'">Aprovar como missão</button><button class="btn sm ghost" data-inv="aj" data-i="'+i+'">Vamos ajustar juntos</button></div>'
         :'<p>Adaptação: '+esc(v.adapt)+'</p>')+'</div>';}).join(''),
   resg:()=>{const pend=S.pedidos.filter(p=>p.st==='pedido'),done=S.pedidos.filter(p=>p.st!=='pedido').slice(0,5);
-    const pc=pend.length?pend.map(p=>{const ok=S.blocos>=p.custo;return '<div class="dcard"><b>'+esc(p.nome)+'<span class="pill wait">'+p.custo+' blocos</span></b><p>O Israel tem '+S.blocos+' blocos'+(ok?'.':'. Não chega para este pedido agora.')+'</p><div class="row"><button class="btn sm" data-ped="ok" data-id="'+p.id+'"'+(ok?'':' disabled')+'>Aprovar</button><button class="btn sm ghost" data-ped="no" data-id="'+p.id+'">Deixar para outro dia</button></div></div>';}).join(''):'<div class="dcard"><p>Nenhum pedido esperando.</p></div>';
+    const pc=pend.length?pend.map(p=>{const ok=S.blocos>=p.custo;return '<div class="dcard"><b>'+esc(p.nome)+'<span class="pill wait">'+p.custo+' blocos</span></b><p>O piloto tem '+S.blocos+' blocos'+(ok?'.':'. Não chega para este pedido agora.')+'</p><div class="row"><button class="btn sm" data-ped="ok" data-id="'+p.id+'"'+(ok?'':' disabled')+'>Aprovar</button><button class="btn sm ghost" data-ped="no" data-id="'+p.id+'">Deixar para outro dia</button></div></div>';}).join(''):'<div class="dcard"><p>Nenhum pedido esperando.</p></div>';
     const rw=S.rewards.map(r=>'<div class="dcard"><div class="row"><b class="grow">'+esc(r.nome)+'</b><span class="pill">'+r.custo+' blocos</span><button class="btn sm ghost" data-rw="del" data-id="'+r.id+'" aria-label="Remover '+esc(r.nome)+'">Remover</button></div></div>').join('');
-    return '<h3>Pedidos do Israel</h3>'+pc
+    return '<h3>Pedidos do piloto</h3>'+pc
       +(done.length?'<div class="dcard"><b>Últimos pedidos</b>'+done.map(p=>'<div class="trip"><span class="grow">'+esc(p.nome)+'</span><span>'+(p.st==='aprovado'?'Aprovado':'Outro dia')+'</span><span>'+fdate(p.data)+'</span></div>').join('')+'</div>':'')
       +'<h3>Prêmios que ele pode pedir</h3><p class="small">Os dois primeiros são exemplos. Troque pelos seus.</p>'+rw
       +'<div class="dcard"><b>Novo prêmio</b><div class="field"><input id="rwNome" maxlength="40" placeholder="Ex.: Escolher a sobremesa" aria-label="Nome do prêmio"><input id="rwCusto" type="number" inputmode="numeric" min="1" max="999" placeholder="Custo em blocos" aria-label="Custo em blocos"></div><button class="btn sm" data-rw="add">Adicionar</button></div>';},
   rec:()=>{const q=['Mandou bem na pedalada de hoje!','Hoje é dia de pedalar. Vamos?','Descansa hoje. Amanhã tem mais.'];
-    return '<div class="dcard"><b>Recado para o Israel</b><p>O Mecânico-Chefe entrega na garagem e lê em voz alta.</p><div class="field"><textarea id="recTxt" maxlength="140" aria-label="Recado" placeholder="Escreva um recado curto"></textarea></div><div class="row">'
+    return '<div class="dcard"><b>Recado para o piloto</b><p>O Mecânico-Chefe entrega na garagem e lê em voz alta.</p><div class="field"><textarea id="recTxt" maxlength="140" aria-label="Recado" placeholder="Escreva um recado curto"></textarea></div><div class="row">'
       +q.map((t,i)=>'<button class="btn sm ghost" style="font-size:13px" data-q="'+i+'">'+t+'</button>').join('')+'</div><button class="btn sm" data-rec="send">Enviar recado</button></div>'
       +'<div class="dcard"><b>Enviados</b>'+(S.recados.length?S.recados.slice(0,8).map(r=>'<div class="trip"><span class="grow">'+esc(r.txt)+'</span><span class="pill'+(r.lido?'':' wait')+'">'+(r.lido?'Lido':'Novo')+'</span><span>'+fdate(r.data)+'</span></div>').join(''):'<p>Nenhum recado ainda.</p>')+'</div>';},
   cal:()=>{CAL.pai=true;if(!CAL.y)calInit();return '<div class="dcard calpai" id="calPai">'+calHTML()+'</div>';},
@@ -2415,8 +2415,8 @@ $('#dadView').addEventListener('click',e=>{if(e.target.closest('#calPai')){calCl
   if(d.cal){const r=CAL_R[d.cal]||[-2,2];S.cal[d.cal]=clamp(calOf(d.cal)+(+d.d),r[0],r[1]);save();SFX.select();renderDad();return;}
   if(d.inv){const v=S.inv[+d.i];if(!v)return;
     if(d.inv==='ok'){const t=($('#ad'+d.i).value||'').trim();if(!t){SFX.bloop();flash('Escreva como deixar a invenção segura antes de aprovar.');return;}
-      v.adapt=t;v.st='Virou missão';addRecado('Sua invenção "'+v.nome+'" virou missão! O pai deixou ela segura e pronta para testar.','auto');SFX.fanfare();renderDad();flash('Aprovada. O Israel recebe um recado na garagem.');}
-    else{v.st='Vamos ajustar juntos';addRecado('Sua invenção "'+v.nome+'" está quase lá! Vem conversar com o pai para deixar ela segura.','auto');SFX.select();renderDad();flash('Marcado. O Israel recebe um recado na garagem.');}
+      v.adapt=t;v.st='Virou missão';addRecado('Sua invenção "'+v.nome+'" virou missão! O pai deixou ela segura e pronta para testar.','auto');SFX.fanfare();renderDad();flash('Aprovada. O piloto recebe um recado na garagem.');}
+    else{v.st='Vamos ajustar juntos';addRecado('Sua invenção "'+v.nome+'" está quase lá! Vem conversar com o pai para deixar ela segura.','auto');SFX.select();renderDad();flash('Marcado. O piloto recebe um recado na garagem.');}
     save();return;}
   if(d.ped){const p=S.pedidos.find(x=>x.id===d.id);if(!p||p.st!=='pedido')return;
     if(d.ped==='ok'){if(S.blocos<p.custo){SFX.bloop();return;}S.blocos-=p.custo;p.st='aprovado';addRecado('Pedido aprovado: '+p.nome+'! Combine com o pai para aproveitar.','auto');SFX.fanfare();renderDad();flash('Aprovado. Foram descontados '+p.custo+' blocos.');}
@@ -2795,6 +2795,9 @@ canvas.addEventListener('pointerup',endDrag);canvas.addEventListener('pointercan
 (function(){const a='VILA',b='CÚBICA',cols=['#ff5a4e','#ffd23f','#3ff0ff','#5ccb3a','#b05cff','#ff7ac8'];
   const mk=(w,o)=>[...w].map((c,i)=>{const col=cols[(i+o)%cols.length];return '<i style="background:'+col+';animation-delay:'+((i+o)*.12)+'s'+(col==='#ffd23f'||col==='#3ff0ff'?';color:#1c2448':'')+'">'+c+'</i>';}).join('');
   $('#logoA').innerHTML=mk(a,0);$('#logoB').innerHTML=mk(b,4);})();
+(function(){const first=!S.viuHistoria;
+  if(first){$('#bStart').hidden=true;$('#bHistIntro').textContent='Começar';}
+  else{$('#bHistIntro').textContent='Rever a história';$('#bHistIntro').classList.add('ghost');$('#bStart').classList.remove('ghost');const w=$('.intro-btns');w.insertBefore($('#bStart'),w.firstChild);}})();
 $('#bStart').addEventListener('click',()=>{ac();SFX.fanfare();$('#intro').hidden=true;go('vila');
   setTimeout(()=>dica('vila_ola','Oi! Eu sou a Faísca. A vila está sem energia. Toque em Viajar para levar energia até a torre. E toque no chão para o seu avatar passear!'),500);});
 
