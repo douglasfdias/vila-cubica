@@ -837,9 +837,9 @@ input[type=range]{width:100%;accent-color:var(--sun)}
 <div id="intro">
   <div class="logo" aria-label="Vila Cúbica"><span class="w" id="logoA"></span><span class="w" id="logoB"></span></div>
   <div class="story card">
-    <p><b style="font:400 18px var(--font-display);color:var(--sun)">A Vila ficou sem energia.</b></p>
-    <p>As torres apagaram e só existe um jeito de religar: alguém que gere energia pedalando.</p>
-    <p>Esse alguém é você. Seu carro leva o Núcleo de Energia até cada torre, e cada torre acesa traz a vila de volta.</p>
+    <p><b style="font:400 18px var(--font-display);color:var(--sun)">A ilha apagou.</b></p>
+    <p>Numa noite, as torres de energia piscaram e se apagaram, uma por uma. Só uma coisa pode trazer a luz de volta: energia de pedalada.</p>
+    <p>E quem pedala é você. Acenda as torres, abra caminho pela névoa e traga cada canto da ilha de volta à vida.</p>
     <p class="small">Protótipo em teste. Nomes, personagens e cores ainda vão ser escolhidos por você.</p>
   </div>
   <div class="intro-btns"><button class="btn big" id="bHistIntro">Ver a história</button><button class="btn big ghost" id="bStart">Jogar</button></div>
@@ -2599,13 +2599,38 @@ const historia=(function(){
   for(let i=0;i<90;i++){const a=R()*Math.PI*2,e=.25+R()*.9,r=110;const m=new THREE.Mesh(BOX,starMat);m.scale.setScalar(.5+R()*.7);
     m.position.set(Math.cos(a)*Math.cos(e)*r,Math.sin(e)*r*.7+8,Math.sin(a)*Math.cos(e)*r);sc.add(m);}
 
-  /* ilhas distantes, com torres apagadas */
-  const farCore=new THREE.MeshLambertMaterial({color:0x4a5368,emissive:0x000000});
-  [[-22,-1,-32,0xe8cf8a,'areia'],[3,-2,-42,0xe8f4ff,'neve'],[24,0,-30,0x2f7a3a,'floresta'],[-38,-3,-12,0xc07a4a,'cânion']].forEach(([x,y,z,c])=>{
-    box(sc,9,1,8,c,x,y,z,{shadow:false});box(sc,6,1.6,5.5,0x7a5230,x,y-1.3,z,{shadow:false});box(sc,3,1.4,2.6,0x5e3f24,x,y-2.6,z,{shadow:false});
-    box(sc,1.2,.4,1.2,0x7d8496,x,y+.7,z);box(sc,.6,2.6,.6,0x8d94a6,x,y+2.2,z);box(sc,1,.2,1,0x5d6680,x,y+3.5,z);
-    const k=new THREE.Mesh(BOX,farCore);k.scale.setScalar(.6);k.position.set(x,y+4,z);sc.add(k);
-    const n=9;for(let i=1;i<n;i++){const f=i/n,px=lerp(0,x,f),pz=lerp(-8.5,z+4,f),py=lerp(-.4,y,f)+Math.sin(f*Math.PI)*1.2;box(sc,.6,.25,.6,0xb8c0d0,px,py,pz,{shadow:false});}});
+  /* as regiões da ilha, ao fundo: 4 torres cada, névoa nas que ainda não abriram */
+  const ILH=[{id:'campos',x:-30,z:-22,c:0x9fdc5a},{id:'colinas',x:-15,z:-33,c:0x7fb84a},{id:'pantano',x:0,z:-38,c:0x3c8c7a},{id:'geleira',x:15,z:-33,c:0xeaf6ff},{id:'vulcao',x:30,z:-22,c:0x5a4a44}];
+  const IL={};let prevP=[0,-8.5];
+  ILH.forEach(r=>{const g=new THREE.Group();g.position.set(r.x,-1,r.z);sc.add(g);
+    box(g,10,1,8,r.c,0,0,0,{shadow:false});box(g,7,1.6,5.6,0x7a5230,0,-1.3,0,{shadow:false});box(g,3.4,1.4,2.8,0x5e3f24,0,-2.6,0,{shadow:false});
+    const cores=[];[[-3.9,2.9],[3.9,2.9],[3.9,-2.9],[-3.9,-2.9]].forEach(([x,z])=>{box(g,.9,.3,.9,0x7d8496,x,.65,z);box(g,.45,2,.45,0x8d94a6,x,1.8,z);
+      const m=new THREE.MeshLambertMaterial({color:0x4a5368,emissive:0x000000});const k=new THREE.Mesh(BOX,m);k.scale.setScalar(.7);k.position.set(x,3.15,z);g.add(k);cores.push(m);});
+    const o={g,cores,lit:0,id:r.id};IL[r.id]=o;
+    if(r.id==='campos'){box(g,1.3,1.9,1.3,0xf2f2f2,1.6,1.45,-1);box(g,1.5,.6,1.5,0xff5a4e,1.6,2.7,-1);
+      const pas=new THREE.Group();pas.position.set(1.6,2.1,-.3);g.add(pas);box(pas,.2,.2,.2,0x5a3a20,0,0,0);
+      [0xff5a4e,0xffd23f,0x3ff0ff,0x5ccb3a].forEach((c,a)=>{const bl=new THREE.Group();bl.rotation.z=a*Math.PI/2;box(bl,.3,1.5,.05,c,.15,.8,0);pas.add(bl);});o.pas=pas;
+      box(g,3.2,.08,2.2,0x3aa0e0,-1.8,.52,1.4,{shadow:false});
+      const boat=new THREE.Group();box(boat,.9,.22,.4,0x9b6a3a,0,.1,0);box(boat,.04,.6,.04,0x6d523a,0,.45,0);box(boat,.04,.4,.34,0xffffff,.04,.5,0);boat.position.set(-1.8,.6,1.4);g.add(boat);o.boat=boat;
+      o.sheep=[[.4,1.6],[1.6,1.9],[-.4,-1.6]].map(([x,z])=>{const s=new THREE.Group();box(s,.6,.4,.42,0xffffff,0,.2,0);box(s,.24,.24,.24,0x2a2a2a,.38,.32,0);s.position.set(x,.5,z);s.userData.y0=.5;g.add(s);return s;});
+      [[-3,-1.5],[-1,-2.2]].forEach(([x,z])=>{box(g,.2,.6,.2,0x7a4a24,x,.8,z);box(g,.8,.8,.8,0x3fae3a,x,1.4,z);});}
+    else if(r.id==='colinas'){box(g,3.2,1.6,2.8,0x6fa83a,-1.6,1.3,-.6);box(g,1.8,1.1,1.6,0x8fbf4a,-1.6,2.6,-.6);box(g,2.6,1.1,2.2,0x6fa83a,2,1.05,.8);box(g,1.2,.7,1.2,0xa8865a,2,1.9,.8);
+      [[.4,-2],[1,1.9],[-3,1.6]].forEach(([x,z])=>{box(g,.2,.6,.2,0x7a4a24,x,.8,z);box(g,.8,.8,.8,0x3d8a2f,x,1.4,z);});}
+    else if(r.id==='pantano'){box(g,2.6,.08,1.6,0x2f7a8a,-1.4,.52,.8,{shadow:false});box(g,1.8,.08,1.4,0x2f7a8a,2,.52,-1,{shadow:false});
+      for(let i=0;i<6;i++)box(g,.08,.8,.08,0x5d7a2a,-2.6+i*.9,.9,-.4+(i%2)*1.4);
+      [[-.6,-.3],[.6,-.3],[-.6,.5],[.6,.5]].forEach(([x,z])=>box(g,.1,.8,.1,0x6d4422,x+.5,.9,z-1.6));box(g,1.4,.7,1.1,0xa8743c,.5,1.6,-1.5);}
+    else if(r.id==='geleira'){box(g,3,2,2.6,0xffffff,-1.6,1.5,-.6);box(g,1.6,1.4,1.4,0xe6f4ff,-1.6,3.2,-.6);box(g,2.2,1.4,2,0xf4fbff,2,1.2,.6);
+      [[.6,1.8],[-.4,-2],[3,-1.6]].forEach(([x,z])=>{const c=mesh(new THREE.ConeGeometry(.5,1.4,4),0x2f5a4a,x,1.2,z,g);c.castShadow=false;});}
+    else if(r.id==='vulcao'){box(g,5,1.4,4.4,0x4a3d3d,0,1.2,0);box(g,3.2,1.4,3,0x3a2f2f,0,2.6,0);box(g,1.9,1,1.9,0x2f2626,0,3.8,0);
+      box(g,1.2,.2,1.2,0xff6a2a,0,4.35,0,{em:0xff3a00});}
+    if(r.id!=='campos'){const fm=new THREE.MeshLambertMaterial({color:0xffffff,emissive:0x8a94a8,transparent:true,opacity:.85,depthWrite:false});const fg=new THREE.Group();g.add(fg);
+      for(let q=0;q<7;q++){const c=new THREE.Mesh(BOX,fm);c.scale.set(3+Math.random()*2.5,1.2+Math.random(),2.6+Math.random()*2);c.position.set(-3.5+q*1.15,3+Math.random()*1.6,-2+Math.random()*4);c.userData={x0:c.position.x,y0:c.position.y};fg.add(c);}
+      o.fog=fg;o.fogMat=fm;o.fogT=.85;o.lift=0;}
+    const [px,pz]=prevP;const n=10;for(let i=1;i<n;i++){const f=i/n,x=lerp(px,r.x,f),z=lerp(pz,r.z,f),y=lerp(-.4,-.5,f)+Math.sin(f*Math.PI)*1.2;box(sc,.6,.25,.6,0xb8c0d0,x,y,z,{shadow:false});}prevP=[r.x,r.z+3];});
+  /* estado das ilhas em cada cena: torres de Campos, Campos viva, Colinas aberta, névoa ligada */
+  function ilhas(cfg){const c=IL.campos;c.lit=cfg.lit||0;c.spin=!!cfg.vida;c.boat.visible=!!cfg.vida;c.sheep.forEach(s=>s.visible=!!cfg.vida);
+    ILH.forEach(r=>{const o=IL[r.id];if(!o.fog)return;o.lift=0;o.lifting=false;o.fogT=cfg.semNevoa?0:(r.id==='colinas'&&cfg.colinas?0:.85);if(cfg.semNevoa||(r.id==='colinas'&&cfg.colinas)){o.fogMat.opacity=o.fogT;}});}
+  ilhas({});
 
   /* estrada de exemplo, na frente da vila */
   const RZ=13,RX0=-12;
@@ -2629,6 +2654,11 @@ const historia=(function(){
   const streamMat=new THREE.MeshBasicMaterial({color:0x8ff8ff});const stream=[];
   for(let i=0;i<16;i++){const m=new THREE.Mesh(BOX,streamMat);m.scale.setScalar(.14);m.visible=false;sc.add(m);stream.push(m);}
   let av=null,mech=null,car=null;
+  /* o baú */
+  const bau=new THREE.Group();bau.position.set(A.x-1.6,0,A.z+.7);bau.rotation.y=.45;
+  box(bau,1.3,.75,.85,0x9b5a2a,0,.38,0);box(bau,1.36,.12,.9,0xffd23f,0,.1,0);box(bau,1.36,.12,.9,0xffd23f,0,.7,0);
+  const tampa=new THREE.Group();tampa.position.set(0,.76,-.42);box(tampa,1.3,.35,.85,0xb06a32,0,.17,.42);box(tampa,1.36,.1,.9,0xffd23f,0,.3,.42);box(tampa,.24,.3,.08,0xffd23f,0,.12,.86);bau.add(tampa);
+  bau.visible=false;sc.add(bau);
 
   /* estado do mundo */
   const W={night:0,color:1,tower:1,tn:0,tc:1,tt:1,rate:1,lastC:-1};
@@ -2652,49 +2682,65 @@ const historia=(function(){
   function powerDown(){tone(620,1.4,'sawtooth',.05,-560);tone(310,1.6,'square',.035,-260,.15);noise(.5,.06,300,.2);}
 
   const SH=[
-    {who:'f',txt:'Esta é a Vila Cúbica. Aqui tudo é feito de blocos, e tudo funciona com energia.',
-      start(){tg(0,1,1,2);F.show=false;P.avShow=false;P.mechShow=false;placeCar('vila');SFX.chime();},
+    {id:'vila',who:'f',txt:'Psiu! Chega mais perto. Esta é a Vila Cúbica, onde até as nuvens são quadradas. E tudo aqui funciona com energia!',
+      start(){tg(0,1,1,2);ilhas({});F.show=false;P.avShow=false;P.mechShow=false;placeCar('vila');SFX.chime();},
       cam(st){orbit(0,1,0,-.5+st*.06,19,12);}},
-    {who:'f',txt:'Mas, numa noite, aconteceu uma coisa estranha. As torres de energia apagaram, uma por uma!',
-      start(){tg(1,0,0,.45);F.show=false;P.avShow=false;P.mechShow=false;placeCar('vila');powerDown();buzz([60,80,60]);},
+    {id:'apagao',who:'f',txt:'Até que, numa noite... bzzzt! As torres piscaram, chiaram e apagaram. Uma por uma.',
+      start(){tg(1,0,0,.45);ilhas({});F.show=false;P.avShow=false;P.mechShow=false;placeCar('vila');powerDown();buzz([60,80,60]);},
       cam(st,p){off(0,2.8,-.2,3,5.2,14-p*2.5);}},
-    {who:'f',txt:'Quase toda a energia sumiu. Só sobrou eu: a Faísca! Uma faísca pequenininha, mas cheia de vontade.',
-      start(){tg(1,0,0);P.avShow=false;P.mechShow=false;placeCar('vila');if(!F.show){F.pos.set(0,4.75,-.2);F.s=0;}F.show=true;F.tgt.set(1.1,3.1,2.4);
+    {id:'faisca',who:'f',txt:'No escuro, sobrou só uma luzinha teimosa. Prazer, eu sou a Faísca! Pequenininha, mas eu nunca desisto.',
+      start(){tg(1,0,0);ilhas({});P.avShow=false;P.mechShow=false;placeCar('vila');if(!F.show){F.pos.set(0,4.75,-.2);F.s=0;}F.show=true;F.tgt.set(1.1,3.1,2.4);
         SFX.coin();setTimeout(()=>SFX.chime(),350);},
       cam(){off(F.pos.x,F.pos.y-.2,F.pos.z,1.1,.6,5,1);}},
-    {who:'f',txt:'Lá longe, depois do Portão do Mapa, ficam as outras torres. Todas apagadas, esperando alguém.',
-      start(){tg(1,0,0);P.avShow=false;P.mechShow=false;placeCar('vila');F.show=true;F.tgt.set(0,6,-10);},
-      cam(st,p){off(0,1,-20,0,15-p*2,32);}},
-    {who:'f',txt:'Eu procurei por toda parte alguém capaz de gerar energia. E encontrei! É você, piloto!',
-      start(){tg(1,0,0);P.mechShow=false;placeCar('vila');F.show=true;F.tgt.set(A.x+.9,1.9,A.z+.4);P.avShow=false;P.hero=1;
-        setTimeout(()=>{if(SH[H.i]!==this)return;P.avShow=true;P.avS=.55;popAt(A);SFX.fanfare();buzz([40,40,80]);av&&playAct(av,'jump',.9,['wave',1.8]);},Math.min(3200,est(this)*500));},
+    {id:'ilha',who:'f',txt:'E não foi só a Vila. A ilha inteira apagou: Campos, Colinas, Pântano, Geleira... e até o Vulcão!',
+      start(){tg(1,0,0);ilhas({semNevoa:1});P.avShow=false;P.mechShow=false;placeCar('vila');F.show=true;F.tgt.set(0,6,-14);},
+      cam(st,p){off(0,1,-26,0,17-p*3,42);}},
+    {id:'heroi',who:'f',txt:'Então eu saí procurando alguém com um poder muito raro. Procurei, procurei... e encontrei. Você, piloto!',
+      start(){tg(1,0,0);ilhas({});P.mechShow=false;placeCar('vila');F.show=true;F.tgt.set(A.x+.9,1.9,A.z+.4);P.avShow=false;P.hero=1;
+        setTimeout(()=>{if(SH[H.i]!==this)return;P.avShow=true;P.avS=.55;popAt(A);SFX.fanfare();buzz([40,40,80]);av&&playAct(av,'jump',.9,['wave',1.8]);},Math.min(3600,est(this)*560));},
       cam(){off(A.x,.85,A.z,-.5,.9,4,1);}},
-    {who:'f',txt:'Você tem um poder especial. Quando pedala, você gera energia de verdade!',
-      start(){tg(1,0,0);P.avShow=true;P.mechShow=false;placeCar('lado');F.show=true;F.tgt.set((A.x+C.x)/2,3.4,A.z+.3);P.stream=true;SFX.chime();},
+    {id:'poder',who:'f',txt:'Quando você pedala, cada volta vira energia de verdade. Quanto mais você pedala, mais tudo brilha!',
+      start(){tg(1,0,0);ilhas({});P.avShow=true;P.mechShow=false;placeCar('lado');F.show=true;F.tgt.set((A.x+C.x)/2,3.4,A.z+.3);P.stream=true;SFX.chime();},
       cam(){off((A.x+C.x)/2,1.2,A.z,-1.4,3.2,8.4,1);}},
-    {who:'f',txt:'Essa energia vai para o Núcleo de Energia do seu carro. E o motor transforma tudo em movimento!',
-      start(){tg(1,0,0);P.avShow=true;P.mechShow=false;placeCar('lado');car.userData.hoodOpen=true;car.userData.engRun=1;P.stream=true;P.motor=true;
+    {id:'motor',who:'f',txt:'Essa energia vai direto para o Núcleo do seu carro. O motor acorda, ronca... e lá vamos nós!',
+      start(){tg(1,0,0);ilhas({});P.avShow=true;P.mechShow=false;placeCar('lado');car.userData.hoodOpen=true;car.userData.engRun=1;P.stream=true;P.motor=true;
         F.show=true;F.tgt.set(C.x-1,3.5,C.z+.8);SFX.hoodOpen();Motor.start(S.engine);},
       cam(st){cL.set(C.x+.2,1.5,C.z);const f=camera.aspect<1?1.45:1,a=.2-st*.05;cP.set(cL.x+Math.sin(a)*6.3*f,cL.y+3.4*f,cL.z+Math.cos(a)*6.3*f);}},
-    {who:'f',txt:'No caminho tem plano, subida, gelo, descida e lama. Escolha o pneu certo, e o carro vai mais longe!',
-      start(){tg(.6,0,0);P.avShow=false;P.mechShow=false;placeCar('estrada');P.drive=true;P.motor=true;F.show=true;Motor.start(S.engine);},
+    {id:'estrada',who:'f',txt:'No caminho tem plano, subida, lama, gelo e descida. Com o pneu certo, tudo fica mais leve.',
+      start(){tg(.6,0,0);ilhas({});P.avShow=false;P.mechShow=false;placeCar('estrada');P.drive=true;P.motor=true;F.show=true;Motor.start(S.engine);},
       cam(){const x=car?car.position.x:0;off(x+1.2,1.4+(car?car.position.y*.6:0),RZ,-.6,3.2,8.6,1);}},
-    {who:'f',txt:'Nas descidas, o carro recarrega. E se você cansar, tudo bem: a gente respira junto, e nada do que você fez se perde.',
-      start(){tg(1,0,0);P.avShow=true;P.mechShow=false;placeCar('vila');F.show=true;F.breathe=true;F.tgt.set(A.x-1.2,2.1,A.z-.3);av&&playAct(av,'sit',est(this)+2.5);SFX.bloop();},
+    {id:'respira',who:'f',txt:'Cansou? Tudo bem. A gente respira junto, bem devagar. Nada do que você conquistou se perde.',
+      start(){tg(1,0,0);ilhas({});P.avShow=true;P.mechShow=false;placeCar('vila');F.show=true;F.breathe=true;F.tgt.set(A.x-1.2,2.1,A.z-.3);av&&playAct(av,'sit',est(this)+2.5);SFX.bloop();},
       cam(){off(A.x-.2,.6,A.z,-.9,1.1,4.6,1);}},
-    {who:'m',txt:'E eu sou o Mecânico-Chefe! Fico na garagem, cuidando das peças do carro e das suas invenções.',
-      start(){tg(1,0,0);P.avShow=false;placeCar('fora');F.show=true;F.tgt.set(MP.x+1.1,2.3,MP.z+.6);P.mechShow=true;P.mechS=Math.max(P.mechS,.01);
+    {id:'mecanico',who:'m',txt:'E eu sou o Mecânico-Chefe! Cuido do motor, dos pneus e das suas invenções. Quanto mais malucas, melhor!',
+      start(){tg(1,0,0);ilhas({});P.avShow=false;placeCar('fora');F.show=true;F.tgt.set(MP.x+1.1,2.3,MP.z+.6);P.mechShow=true;P.mechS=Math.max(P.mechS,.01);
         SFX.wrench();mech&&playAct(mech,'wave',2.2);},
       cam(){off(MP.x,.95,MP.z,.7,1,4.8,1);}},
-    {who:'f',txt:'A cada viagem completa, uma torre acende. E a vila volta a ter cor, luz e alegria!',
-      start(){P.avShow=true;P.mechShow=false;placeCar('vila');F.show=true;F.tgt.set(0,4.75,-.2);tg(1,0,0);P.dance=true;
-        const me=this;setTimeout(()=>{if(SH[H.i]!==me)return;tg(0,1,1,.5);SFX.fanfare();SFX.horn();buzz([100,60,200]);
-          [0,500,1000,1600].forEach((d,k)=>setTimeout(()=>{if(SH[H.i]!==me)return;pop(sc,new THREE.Vector3((k%2?-1:1)*k*.8,5.5,-.2),[0xffd23f,0x3ff0ff,0xff5a4e,0x5ccb3a,0xff7ac8],22,6,.16);SFX.pop();},d));},1300);},
-      cam(st){orbit(0,2.6,-.2,.3+st*.12,13,6.5);}},
-    {who:'f',txt:'Vamos religar a Vila Cúbica juntos? Toque em começar a jogar!',
-      start(){tg(0,1,1,2);P.avShow=true;P.mechShow=true;P.mechS=Math.max(P.mechS,.01);placeCar('vila');F.show=true;F.breathe=false;F.tgt.set(A.x+.9,2,A.z+.4);P.dance=true;
+    {id:'torres',who:'f',txt:'Cada região tem quatro torres. A cada dia em que você pedala até o fim, uma delas acende.',
+      start(){tg(.45,0,0);ilhas({lit:0});P.avShow=false;P.mechShow=false;placeCar('vila');F.show=true;F.tgt.set(-35,4.5,-17);const me=this;
+        [1,2,3,4].forEach(n=>setTimeout(()=>{if(SH[H.i]!==me)return;IL.campos.lit=n;SFX.chime();buzz(30);const c=IL.campos.g.position,k=[[-3.9,2.9],[3.9,2.9],[3.9,-2.9],[-3.9,-2.9]][n-1];
+          pop(sc,new THREE.Vector3(c.x+k[0],c.y+3.4,c.z+k[1]),[0xffd23f,0xffffff,0x3ff0ff],14,4,.18);},900+n*1100));},
+      cam(st,p){off(-30,1.5,-22,7-p*2,6,13);}},
+    {id:'vida',who:'f',txt:'E cada torre acesa traz algo de volta: o moinho gira, as ovelhas chegam e o barquinho volta para o lago!',
+      start(){tg(.25,0,0);ilhas({lit:4});P.avShow=false;P.mechShow=false;placeCar('vila');F.show=true;F.tgt.set(-34.5,3.4,-18.5);const me=this,c=IL.campos;
+        [()=>{c.spin=true;SFX.spin();},()=>{c.sheep.forEach(s=>s.visible=true);SFX.boing();},()=>{c.boat.visible=true;SFX.bloop();}].forEach((f,i)=>setTimeout(()=>{if(SH[H.i]!==me)return;f();buzz(25);
+          pop(sc,c.g.position.clone().add(new THREE.Vector3(i===0?1.6:i===1?.6:-1.8,2,i===0?-1:i===1?1.6:1.4)),[0xffd23f,0x3ff0ff,0xff5a4e,0x5ccb3a,0xffffff],18,5,.18);},1400+i*1500));},
+      cam(st){off(-30.5,1.2,-21.5,2.2+st*.15,4.6,10.5,1);}},
+    {id:'nevoa',who:'f',txt:'Com as quatro torres acesas, a névoa some e uma região nova aparece. Cada uma esconde surpresas!',
+      start(){tg(.2,0,0);ilhas({lit:4,vida:1});P.avShow=false;P.mechShow=false;placeCar('vila');F.show=true;F.tgt.set(-18,5,-27);const me=this,o=IL.colinas;
+        setTimeout(()=>{if(SH[H.i]!==me)return;o.lifting=true;o.fogT=0;SFX.fanfare();buzz([60,40,120]);
+          for(let i=0;i<4;i++)setTimeout(()=>pop(sc,o.g.position.clone().add(new THREE.Vector3((Math.random()-.5)*6,3,(Math.random()-.5)*4)),[0xffd23f,0x3ff0ff,0xff5a4e,0x5ccb3a,0xffffff],20,6,.2),i*220);},1800);},
+      cam(st,p){off(-21,1.5,-28,5-p*3,7,15);}},
+    {id:'bau',who:'f',txt:'E toda viagem termina com um baú cheio de surpresas: XP, blocos, troféus e até itens raros!',
+      start(){ilhas({lit:4,vida:1,colinas:1});P.avShow=true;P.mechShow=false;placeCar('vila');F.show=true;F.tgt.set(A.x-2.4,2.4,A.z+1.4);tg(1,0,0);P.bau=true;P.bauT=0;
+        const me=this;setTimeout(()=>{if(SH[H.i]!==me)return;tg(0,1,1,.6);SFX.fanfare();SFX.horn();buzz([100,60,200]);P.dance=true;
+          [0,450,900,1500].forEach((d,k)=>setTimeout(()=>{if(SH[H.i]!==me)return;pop(sc,bau.position.clone().add(new THREE.Vector3(0,1.2,0)),[0xffd23f,0x3ff0ff,0xff5a4e,0x5ccb3a,0xff7ac8],22,5,.16);SFX.coin();},d));},1500);},
+      cam(st){off(A.x-.8,.9,A.z+.4,-.3-st*.03,1.6,6,1);}},
+    {id:'fim',who:'f',txt:'Pronto para religar a ilha inteira? Então segura firme, piloto. Vamos nessa!',
+      start(){tg(0,1,1,2);ilhas({lit:4,vida:1,colinas:1});P.avShow=true;P.mechShow=true;P.mechS=Math.max(P.mechS,.01);placeCar('vila');F.show=true;F.breathe=false;F.tgt.set(A.x+.9,2,A.z+.4);P.dance=true;
         mech&&playAct(mech,'wave',2.2);SFX.music();},
       cam(st){orbit(0,1,1.2,-.35+st*.05,17,10);}}];
+
 
   function say(s){const tok=++H.tok;H.endAt=null;
     if(!S.vozOn){H.endAt=est(s);return;}
@@ -2710,7 +2756,7 @@ const historia=(function(){
 
   function dots(){$('#hDots').innerHTML=SH.map((s,i)=>'<button class="hd'+(i===H.i?' on':i<H.i?' done':'')+'" data-h="'+i+'" aria-label="Parte '+(i+1)+'"></button>').join('');}
   function startShot(i,cut){i=clamp(i,0,SH.length-1);const prev=SH[H.i];H.i=i;H.st=0;H.ended=false;H.typed=-1;H.paused=false;
-    const s=SH[i];P.stream=false;P.drive=false;P.dance=false;F.breathe=false;P.hero=0;
+    const s=SH[i];P.stream=false;P.drive=false;P.dance=false;F.breathe=false;P.hero=0;P.bau=false;
     if(av&&av.userData.act&&av.userData.act.name==='sit')av.userData.act=null;
     P.motor=false;$('#hTerr').dataset.n='';
     s.start.call(s);if(!P.motor)Motor.stop(true);
@@ -2723,7 +2769,7 @@ const historia=(function(){
   const ICON_PLAY='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>';
   function pause(){if(H.paused){startShot(H.i);return;}H.paused=true;hush();Motor.stop(true);$('#hPause').innerHTML=ICON_PLAY;$('#hPause').setAttribute('aria-label','Continuar');$('#hTxt').textContent=SH[H.i].txt;}
   function finish(play){hush();S.viuHistoria=true;save();go('vila');
-    if(play)setTimeout(()=>falar('Vamos lá, piloto! Toque no Portão do Mapa para fazer sua primeira viagem.'),400);}
+    if(play)setTimeout(()=>falar('Bora, piloto! Toque em Viajar, escolha Campos no mapa e acenda a primeira torre.'),400);}
 
   $('#hNext').addEventListener('click',()=>{if(H.i<SH.length-1)startShot(H.i+1);else{H.endAt=0;}});
   $('#hBack').addEventListener('click',()=>startShot(H.i>0&&H.st<1.5?H.i-1:H.i));
@@ -2760,12 +2806,18 @@ const historia=(function(){
       /* avançar */
       if(!H.paused&&H.endAt!=null&&H.st>=H.endAt+1.1){if(H.i<SH.length-1)startShot(H.i+1);else if(!H.ended){H.ended=true;$('#hEnd').hidden=false;$('#hCtl').hidden=true;}}
       /* torre */
-      let g=W.tower;if(H.i===1&&H.st<2.6)g*=Math.random()<.35?.15:1;
+      let g=W.tower;const sid=s.id;if(sid==='apagao'&&H.st<2.6)g*=Math.random()<.35?.15:1;
       core.rotation.y+=dt*(.4+g);core.rotation.x+=dt*.3;torreMat.emissive.setRGB(.05*g,.72*g*(.85+.15*Math.sin(t*3)),.82*g*(.85+.15*Math.sin(t*3)));
-      beamMat.opacity=(H.i>=10?1:0)*clamp(g*1.2-.2,0,1)*.32;
+      beamMat.opacity=(sid==='bau'||sid==='fim'?1:0)*clamp(g*1.2-.2,0,1)*.32;
       portalMat.emissive.setHSL(.72+.06*Math.sin(t*1.3),.9,(.32+.08*Math.sin(t*4))*W.color);
       siren.rotation.y+=dt*3*W.color;
-      farCore.emissive.setRGB(0,(H.i===3?.12+.1*Math.sin(t*4):0),(H.i===3?.18+.12*Math.sin(t*4):0));
+      ILH.forEach(r=>{const o=IL[r.id];o.cores.forEach((m,k)=>{const on=k<o.lit;m.color.setHex(on?0xffd23f:0x4a5368);
+          if(on)m.emissive.setRGB(.9,.6*(.85+.15*Math.sin(t*3+k)),0);else if(sid==='ilha')m.emissive.setRGB(0,.12+.1*Math.sin(t*4),.18+.12*Math.sin(t*4));else m.emissive.setRGB(0,0,0);});
+        if(o.pas&&o.spin)o.pas.rotation.z-=dt*2.6;if(o.sheep)o.sheep.forEach((q,k)=>q.position.y=q.userData.y0+Math.abs(Math.sin(t*4+k))*.12);if(o.boat)o.boat.rotation.z=Math.sin(t*1.5)*.06;
+        if(o.fog){o.fogMat.opacity=lerp(o.fogMat.opacity,o.fogT,1-Math.pow(o.lifting?.3:.05,dt));o.fog.visible=o.fogMat.opacity>.02;if(o.lifting)o.lift+=dt*2.5;
+          o.fog.children.forEach((c,q)=>{c.position.x=c.userData.x0+Math.sin(t*.4+q)*.5;c.position.y=c.userData.y0+o.lift;});}});
+      P.bauT=(P.bauT||0)+dt;const bs=P.bau?1:0;bau.visible=P.bau||bau.scale.x>.05;bau.scale.setScalar(Math.max(.001,lerp(bau.scale.x,bs,1-Math.pow(.01,dt))));
+      tampa.rotation.x=P.bau?-clamp((P.bauT-1.3)*2.2,0,1.9):0;
       clouds.forEach(c=>{c.position.x+=c.userData.v*dt;if(c.position.x>24)c.position.x=-24;});
       /* carro */
       let speed=0,effort=P.stream?.7:0;
@@ -2786,7 +2838,7 @@ const historia=(function(){
         mech.rotation.y=turn(mech.rotation.y,Math.atan2(camera.position.x-MP.x,camera.position.z-MP.z),dt*5);animAvatar(mech,dt,t);}
       mechLight.intensity=lerp(mechLight.intensity,(P.mechShow&&W.night>.4)?1.2:0,1-Math.pow(.05,dt));
       /* faísca */
-      F.s=lerp(F.s,F.show?1:0,1-Math.pow(.003,dt));fz.visible=F.s>.02;F.pos.lerp(F.tgt,1-Math.pow(H.i===3?.3:.08,dt));
+      F.s=lerp(F.s,F.show?1:0,1-Math.pow(.003,dt));fz.visible=F.s>.02;F.pos.lerp(F.tgt,1-Math.pow(sid==='ilha'||sid==='torres'||sid==='nevoa'?.3:.08,dt));
       const br=F.breathe?1+.22*Math.sin(H.st*1.7):1;fz.position.copy(F.pos);fz.position.y+=Math.sin(t*2.4)*.12;fz.scale.setScalar(Math.max(.001,F.s*br));
       fz.lookAt(camera.position);fLight.intensity=1.3*F.s*(.85+.15*Math.sin(t*5));faMat.emissive.setRGB(.1,.71*br,.81*br);
       orb.forEach((m,i)=>{const a=t*3+i*2.1;m.position.set(Math.cos(a)*.6,Math.sin(a*1.3)*.25,Math.sin(a)*.6);});
